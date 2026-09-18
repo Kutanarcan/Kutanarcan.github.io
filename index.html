@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Kutan Arcan Akgül, game developer (Unity, C#). Hyper-casual, hybrid-casual and puzzle games.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎲</text></svg>">
+<title>Kutan Arcan Akgül, Game Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF1F6; --surface:#FFFFFF; --ink:#172033; --muted:#566076; --line:#D2D8E2;
+  --cube:#2B59E8; --cube-deep:#1C3FB0; --paint:#F5B800; --paint-soft:#FBE7A1; --empty:#E3E8F0;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#10151F; --surface:#182030; --ink:#E6EAF2; --muted:#9AA4B7; --line:#2A3449;
+    --cube:#6F8FFF; --cube-deep:#4A68D8; --paint:#E6AC00; --paint-soft:#5A4817; --empty:#212B3E;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#10151F; --surface:#182030; --ink:#E6EAF2; --muted:#9AA4B7; --line:#2A3449;
+  --cube:#6F8FFF; --cube-deep:#4A68D8; --paint:#E6AC00; --paint-soft:#5A4817; --empty:#212B3E;
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration-color:var(--cube);text-decoration-thickness:2px;text-underline-offset:3px}
+a:hover{color:var(--cube)}
+:focus-visible{outline:3px solid var(--cube);outline-offset:3px;border-radius:4px}
+img{max-width:100%}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1.15fr 1fr;gap:56px;align-items:center;padding:72px 0 64px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(2.6rem,6vw,4.4rem);line-height:.98;letter-spacing:-.025em;margin:0 0 18px}
+.role{font-family:var(--display);font-weight:500;font-size:1.3rem;color:var(--muted);margin:0 0 22px}
+.intro{max-width:34em;margin:0 0 28px}
+.links{display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:0;list-style:none}
+.links a,.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border:1.5px solid var(--line);border-radius:999px;text-decoration:none;font-weight:700;font-size:.95rem;background:var(--surface);color:var(--ink);cursor:pointer;font-family:var(--body)}
+.links a:hover,.btn:hover{border-color:var(--cube);color:var(--cube)}
+.btn.primary{background:var(--cube);border-color:var(--cube);color:#fff}
+.btn.primary:hover,.links a.btn.primary:hover{background:var(--cube-deep);border-color:var(--cube-deep);color:#fff}
+.links a.btn.primary{background:var(--cube);border-color:var(--cube);color:#fff}
+.cv-note{font-size:.9rem;color:var(--muted);margin:12px 0 0;min-height:1.4em}
+
+/* Board */
+.play{background:var(--surface);border:1.5px solid var(--line);border-radius:22px;padding:24px}
+.play h2{font-family:var(--display);font-weight:700;font-size:1.25rem;margin:0 0 4px;letter-spacing:-.01em}
+.play p.rule{margin:0 0 18px;color:var(--muted);font-size:.95rem}
+.board{--gap:8px;position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap);width:100%;max-width:320px;margin:0 auto;touch-action:manipulation}
+.cell{aspect-ratio:1;border:0;border-radius:10px;background:var(--empty);padding:0;cursor:default;position:relative;transition:background-color .25s ease}
+.cell.painted{background:var(--paint)}
+.cell.legal{cursor:pointer}
+.cell.legal::after{content:"";position:absolute;inset:38%;border-radius:50%;background:var(--cube);opacity:.28}
+.cell.legal:hover::after{opacity:.55}
+.cube{position:absolute;z-index:2;top:0;left:0;width:calc((100% - 3 * var(--gap)) / 4);aspect-ratio:1;pointer-events:none;
+  transform:translate(calc(var(--x) * (100% + var(--gap))), calc(var(--y) * (100% + var(--gap))));
+  transition:transform .22s cubic-bezier(.3,.7,.3,1.2)}
+.cube span{position:absolute;inset:9%;border-radius:9px;background:var(--cube);box-shadow:inset 0 -6px 0 var(--cube-deep);display:grid;place-items:center;color:#fff;font-family:var(--display);font-weight:800;font-size:1.35rem}
+.cube.roll span{animation:roll .22s ease}
+@keyframes roll{50%{transform:scale(.86) rotate(var(--r,0deg))}}
+@media (prefers-reduced-motion: reduce){.cube{transition:none}.cube.roll span{animation:none}.cell{transition:none}}
+.board-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:320px;margin:18px auto 0}
+.board-bar .btn{padding:7px 14px;font-size:.9rem}
+.status{max-width:320px;margin:14px auto 0;min-height:3.2em;font-size:.95rem;color:var(--muted)}
+.status.win{color:var(--ink)}
+
+/* Sections */
+section{padding:56px 0;border-top:1.5px solid var(--line)}
+h2.sec{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,3.4vw,2.3rem);letter-spacing:-.02em;line-height:1.1;margin:0 0 10px}
+.lede{color:var(--muted);max-width:40em;margin:0 0 32px}
+
+/* Featured */
+.featured{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.featured h3{font-family:var(--display);font-weight:700;font-size:1.6rem;margin:0 0 12px;letter-spacing:-.01em}
+.featured p{margin:0 0 16px;max-width:34em}
+.stages{list-style:none;margin:0;padding:0;counter-reset:s;border-left:2px solid var(--line)}
+.stages li{counter-increment:s;position:relative;padding:5px 0 5px 22px;display:flex;justify-content:space-between;gap:16px;font-size:.97rem}
+.stages li::before{content:"";position:absolute;left:-7px;top:50%;width:12px;height:12px;margin-top:-6px;border-radius:3px;background:var(--empty);border:2px solid var(--line)}
+.stages li.done::before{background:var(--paint);border-color:var(--paint)}
+.stages li.now::before{background:var(--cube);border-color:var(--cube)}
+.stages li.now{font-weight:700}
+.stages .q{color:var(--muted);font-size:.9rem;text-align:right}
+.stages .group{padding-top:16px;color:var(--muted);font-size:.85rem;font-weight:700}
+.stages .group::before{display:none}
+
+/* Project list */
+.projects{list-style:none;margin:0;padding:0}
+.projects li{display:grid;grid-template-columns:220px 1fr auto;gap:24px;padding:20px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.projects li:first-child{padding-top:0}
+.projects h3{font-family:var(--display);font-weight:700;font-size:1.2rem;margin:0}
+.projects p{margin:0;max-width:36em}
+.projects .tag{display:block;font-size:.85rem;color:var(--muted);margin-top:2px}
+.projects .plinks{display:flex;gap:14px;font-size:.93rem;font-weight:700;white-space:nowrap}
+
+/* Timeline */
+.timeline{list-style:none;margin:0;padding:0}
+.timeline li{display:grid;grid-template-columns:170px 1fr;gap:24px;padding:18px 0;border-bottom:1px solid var(--line)}
+.timeline li:first-child{padding-top:0}
+.timeline .when{color:var(--muted);font-size:.93rem;padding-top:3px}
+.timeline h3{font-family:var(--display);font-weight:700;font-size:1.2rem;margin:0}
+.timeline .game{color:var(--muted);font-size:.95rem;margin:2px 0 8px}
+.timeline .game a{font-weight:700;color:var(--ink)}
+.timeline p{margin:0;max-width:40em}
+
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px 40px;margin:0}
+.skills dt{font-weight:700;margin-bottom:4px}
+.skills dd{margin:0;color:var(--muted)}
+
+footer{border-top:1.5px solid var(--line);padding:48px 0 64px}
+footer h2{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 8px;letter-spacing:-.02em}
+footer p{margin:0 0 20px;color:var(--muted)}
+
+@media (max-width:860px){
+  .hero,.featured{grid-template-columns:1fr;gap:36px}
+  .hero{padding:48px 0}
+  .projects li{grid-template-columns:1fr;gap:6px}
+  .timeline li{grid-template-columns:1fr;gap:4px}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header class="hero">
+    <div>
+      <h1>Kutan Arcan Akgül</h1>
+      <p class="role">Game Developer, Unity &amp; C#</p>
+      <p class="intro">Six years building mobile games: fifteen hyper-casual titles, a live open-world racer and a live puzzle game with its own live events. I like simple rules with depth hidden inside them, and code that keeps those rules separate from what the player sees.</p>
+      <ul class="links">
+        <li><a href="https://github.com/Kutanarcan" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://kutanarcanakgul.itch.io" target="_blank" rel="noopener">itch.io</a></li>
+        <li><a href="https://linkedin.com/in/kutanarcanakgul" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="mailto:kutanarcanakgul@gmail.com">Email me</a></li>
+        <li><a class="btn primary" href="Kutan_Arcan_Akgul_CV_2026.pdf" download>Download CV</a></li>
+      </ul>
+          </div>
+
+    <div class="play" aria-labelledby="play-title">
+      <h2 id="play-title">Try the mechanic</h2>
+      <p class="rule">Roll the cube to paint the board. Painted cells are blocked, and you win when every cell is painted.</p>
+      <div class="board" id="board" role="group" aria-label="Cube Roll board, 4 by 4. Use arrow keys or tap a highlighted cell.">
+        <div class="cube" id="cube" aria-hidden="true"><span id="moves">15</span></div>
+      </div>
+      <div class="board-bar">
+        <button class="btn" type="button" id="undo">Undo</button>
+        <button class="btn" type="button" id="reset">Reset</button>
+      </div>
+      <p class="status" id="status" aria-live="polite">The number on the cube is the moves left. Tap a highlighted cell or use the arrow keys.</p>
+    </div>
+  </header>
+
+  <section id="cube-roll" aria-labelledby="cr-title">
+    <h2 class="sec" id="cr-title">Cube Roll Puzzle</h2>
+    <p class="lede">The board above is the smallest version of it.</p>
+    <div class="featured">
+      <div>
+        <h3>A full hybrid-casual process, start to finish</h3>
+        <p>I'm building Cube Roll Puzzle to experience the whole hybrid-casual journey myself, from the first prototype to LiveOps. In past roles I worked on parts of that path; here I own every stage.</p>
+        <p>Each stage has to answer one question before the next begins, and every step forward is a written go, iterate, pivot or kill decision. The market and player data are simulated; the development and the process are real.</p>
+        <p>The production core is pure C#, tested without opening Unity, with a thin view layer on top. AI works as a pair programmer under rule sets I wrote, and every phase is reviewed by hand.</p>
+        <ul class="links" style="margin-top:22px">
+          <li><a href="https://github.com/Kutanarcan/CubeRollPuzzle" target="_blank" rel="noopener">View on GitHub</a></li>
+        </ul>
+      </div>
+      <ol class="stages" aria-label="Project stages">
+        <li class="done"><span>Planning</span><span class="q">What is the game?</span></li>
+        <li class="now"><span>Prototype, in progress</span><span class="q">Is it fun?</span></li>
+        <li><span>Marketability test</span><span class="q">Does it sell in 5 seconds?</span></li>
+        <li><span>Harvest</span><span class="q">What did we learn?</span></li>
+        <li><span>Game logic</span><span class="q">Are the rules correct?</span></li>
+        <li><span>Presentation</span><span class="q">Can the player play it?</span></li>
+        <li><span>Polish &amp; juice</span><span class="q">Does it feel great?</span></li>
+        <li><span>M1 Foundation</span><span class="q">Can we tune it remotely?</span></li>
+        <li><span>M2 First session</span><span class="q">Do players return tomorrow?</span></li>
+        <li><span>M3 Meta &amp; economy</span><span class="q">This week?</span></li>
+        <li><span>M4 Monetization</span><span class="q">Does each player add value?</span></li>
+        <li><span>M5 LiveOps &amp; social</span><span class="q">For months?</span></li>
+        <li><span>Scale</span><span class="q">Can content keep up?</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="projects" aria-labelledby="pr-title">
+    <h2 class="sec" id="pr-title">Puzzle and casual projects</h2>
+    <p class="lede">Mechanics I designed from zero, and trending ones I rebuilt to understand why they work.</p>
+    <ul class="projects">
+      <li>
+        <div><h3>FluidSort</h3><span class="tag">Original mechanic</span></div>
+        <p>A sorting puzzle designed from zero, starting from market trend analysis.</p>
+        <div class="plinks"><a href="https://kutanarcanakgul.itch.io/fluid-sort" target="_blank" rel="noopener">itch.io</a><a href="https://www.linkedin.com/posts/kutanarcanakgul_gamedev-gamedesign-prototype-activity-7488488744514351106-43rR" target="_blank" rel="noopener">LinkedIn</a></div>
+      </li>
+      <li>
+        <div><h3>Buildris</h3><span class="tag">Original twist</span></div>
+        <p>Tetris with a runtime tetromino editor. Players design their own pieces while the game runs; the only rule is that blocks must touch.</p>
+        <div class="plinks"><a href="https://kutanarcanakgul.itch.io/buildris" target="_blank" rel="noopener">itch.io</a><a href="https://www.linkedin.com/posts/kutanarcanakgul_gamedev-unity-csharp-activity-7483052774386151424-HgSb" target="_blank" rel="noopener">LinkedIn</a></div>
+      </li>
+      <li>
+        <div><h3>Nut Sort × Ball Sort</h3><span class="tag">Architecture study</span></div>
+        <p>One logic and data layer driving two completely different games on screen.</p>
+        <div class="plinks"><a href="https://www.linkedin.com/posts/kutanarcanakgul_gamedev-unity-csharp-activity-7480929195771060224-v3Pr" target="_blank" rel="noopener">LinkedIn</a></div>
+      </li>
+      <li>
+        <div><h3>SmashFest clone</h3><span class="tag">Rebuilt in 2–3 days</span></div>
+        <p>A trending title rebuilt with a closed-form ballistic solver, a pure C# core, 186 EditMode tests and a multi-layer grid level editor.</p>
+        <div class="plinks"><a href="https://github.com/Kutanarcan/SmashFestClone" target="_blank" rel="noopener">GitHub</a></div>
+      </li>
+      <li>
+        <div><h3>Arrows replica</h3><span class="tag">Reverse-engineered</span></div>
+        <p>A trending mechanic rebuilt to study its level design and feel.</p>
+        <div class="plinks"><a href="https://www.linkedin.com/posts/kutanarcanakgul_gamedev-unity-leveldesign-activity-7479809707218505728-uSo2" target="_blank" rel="noopener">LinkedIn</a></div>
+      </li>
+    </ul>
+  </section>
+
+  <section id="experience" aria-labelledby="ex-title">
+    <h2 class="sec" id="ex-title">Experience</h2>
+    <p class="lede">From two-week hyper-casual cycles to live games with thousands of players.</p>
+    <ol class="timeline" reversed>
+      <li>
+        <div class="when">2025 – 2026</div>
+        <div>
+          <h3>SciPlay Turkey</h3>
+          <p class="game">Match Hotel, live-ops triple-match game. <a href="https://play.google.com/store/apps/details?id=com.ck.tripletiles" target="_blank" rel="noopener">Google Play</a></p>
+          <p>Designed and shipped two live events end to end, built remote config for A/B testing on an epoch-based time system, and wrote the analytics layer behind nearly all live events.</p>
+        </div>
+      </li>
+      <li>
+        <div class="when">2022 – 2025</div>
+        <div>
+          <h3>Banba Games</h3>
+          <p class="game">Car Racing Simulator: X Street, live open-world racer. <a href="https://play.google.com/store/apps/details?id=com.banbagames.grandstreetracing" target="_blank" rel="noopener">Google Play</a></p>
+          <p>Rewrote the tire-trail mesh system as multithreaded code, from 5 ms to 0.1 ms per update with zero allocations. Built the backend and offline/online sync, and a FishNet physics multiplayer prototype.</p>
+        </div>
+      </li>
+      <li>
+        <div class="when">2021 – 2022</div>
+        <div>
+          <h3>Talus Studio</h3>
+          <p class="game">Hyper-casual games, studio closed in 2022. <a href="https://www.linkedin.com/posts/kutanarcanakgul_hyper-casual-games-that-i-developed-at-talus-activity-7191368778008408064-6mT8/" target="_blank" rel="noopener">Gameplay reel</a></p>
+          <p>Shipped 15 titles in 12 months, each from core mechanic to store in two to three weeks, on a shared toolkit that grew with every release.</p>
+        </div>
+      </li>
+      <li>
+        <div class="when">2019 – 2020</div>
+        <div>
+          <h3>Imaginite Studios</h3>
+          <p class="game">Kral Shakir İstanbul, licensed IP title. <a href="https://www.youtube.com/watch?v=sIg5PF1mP_I" target="_blank" rel="noopener">Video</a></p>
+          <p>My first job in games: maintaining and extending gameplay and UI systems.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section id="skills" aria-labelledby="sk-title">
+    <h2 class="sec" id="sk-title">Skills</h2>
+    <p class="lede">B.Sc. Computer Engineering, Erciyes University.</p>
+    <dl class="skills">
+      <div><dt>Engine and language</dt><dd>Unity, C#, URP, Input System</dd></div>
+      <div><dt>Architecture</dt><dd>Logic–data–view separation, SOLID, dependency injection (VContainer), assembly definitions</dd></div>
+      <div><dt>Testing</dt><dd>Unity Test Framework, NUnit, EditMode and PlayMode tests</dd></div>
+      <div><dt>Live games</dt><dd>Remote Config, A/B testing, analytics pipelines, live events, save data</dd></div>
+      <div><dt>Performance</dt><dd>Multithreading, direct mesh buffers, pooling, GC profiling</dd></div>
+      <div><dt>Tooling and release</dt><dd>Level editors, JSON level pipelines, ad and Play SDKs, Gradle, Play Console</dd></div>
+    </dl>
+  </section>
+
+  <footer>
+    <h2>Let's talk</h2>
+    <p>Based in İstanbul. I'm happy to talk in person or take on a case.</p>
+    <ul class="links">
+      <li><a href="mailto:kutanarcanakgul@gmail.com">kutanarcanakgul@gmail.com</a></li>
+      <li><a class="btn primary" href="Kutan_Arcan_Akgul_CV_2026.pdf" download>Download CV</a></li>
+    </ul>
+  </footer>
+</main>
+
+<script>
+(function(){
+  var N=4, START_MOVES=N*N-1;
+  var board=document.getElementById('board'), cube=document.getElementById('cube'),
+      movesEl=document.getElementById('moves'), statusEl=document.getElementById('status');
+  var cells=[], state, history;
+
+  for(var i=0;i<N*N;i++){
+    var b=document.createElement('button');
+    b.type='button'; b.className='cell'; b.dataset.i=i;
+    b.addEventListener('click', onCell);
+    board.appendChild(b); cells.push(b);
+  }
+
+  function reset(){ state={x:0,y:0,moves:START_MOVES,painted:new Array(N*N).fill(false)}; state.painted[0]=true; history=[]; render('The number on the cube is the moves left. Tap a highlighted cell or use the arrow keys.'); }
+  function idx(x,y){return y*N+x}
+  function canMove(x,y){ return x>=0&&y>=0&&x<N&&y<N && !state.painted[idx(x,y)] && Math.abs(x-state.x)+Math.abs(y-state.y)===1 && state.moves>0; }
+  function legalCount(){ var c=0; [[1,0],[-1,0],[0,1],[0,-1]].forEach(function(d){ if(canMove(state.x+d[0],state.y+d[1])) c++; }); return c; }
+
+  function move(x,y){
+    if(!canMove(x,y)) return;
+    history.push({x:state.x,y:state.y,moves:state.moves,painted:state.painted.slice()});
+    var dx=x-state.x, dy=y-state.y;
+    state.x=x; state.y=y; state.moves--; state.painted[idx(x,y)]=true;
+    cube.style.setProperty('--r', (dx||dy)>0 ? '12deg' : '-12deg');
+    cube.classList.remove('roll'); void cube.offsetWidth; cube.classList.add('roll');
+    var msg='';
+    if(state.painted.every(Boolean)) msg='Board painted. That is Cube Roll Puzzle in its smallest form: the full game adds cubes that roll until blocked and cubes you push.';
+    else if(legalCount()===0) msg='Stuck: the cube is boxed in by painted cells. Undo a few moves or reset.';
+    render(msg);
+  }
+
+  function onCell(e){ var i=+e.currentTarget.dataset.i; move(i%N, Math.floor(i/N)); }
+
+  function render(msg){
+    cube.style.setProperty('--x', state.x); cube.style.setProperty('--y', state.y);
+    movesEl.textContent=state.moves;
+    cells.forEach(function(c,i){
+      var x=i%N, y=Math.floor(i/N), legal=canMove(x,y), here=(x===state.x&&y===state.y);
+      c.classList.toggle('painted', state.painted[i]);
+      c.classList.toggle('legal', legal);
+      c.tabIndex=-1;
+      c.setAttribute('aria-label','Row '+(y+1)+', column '+(x+1)+(here?', cube here':'')+(state.painted[i]?', painted':', empty')+(legal?', can move here':''));
+      c.setAttribute('aria-disabled', legal?'false':'true');
+    });
+    board.tabIndex=0;
+    document.getElementById('undo').disabled=history.length===0;
+    if(msg){ statusEl.textContent=msg; statusEl.classList.toggle('win', state.painted.every(Boolean)); }
+  }
+
+  board.addEventListener('keydown', function(e){
+    var d={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]}[e.key];
+    if(!d) return; e.preventDefault(); move(state.x+d[0], state.y+d[1]);
+  });
+  document.getElementById('undo').addEventListener('click', function(){
+    var h=history.pop(); if(!h) return;
+    state.x=h.x; state.y=h.y; state.moves=h.moves; state.painted=h.painted;
+    render('Move undone.');
+  });
+  document.getElementById('reset').addEventListener('click', function(){ reset(); });
+  reset();
+
+})();
+</script>
+</body>
+</html>
