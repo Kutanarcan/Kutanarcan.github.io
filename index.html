@@ -80,13 +80,17 @@ h2.sec{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,3.4vw,2
 
 /* Timeline */
 .timeline{list-style:none;margin:0;padding:0}
-.timeline li{display:grid;grid-template-columns:170px 1fr;gap:24px;padding:18px 0;border-bottom:1px solid var(--line)}
-.timeline li:first-child{padding-top:0}
+.timeline > li{display:grid;grid-template-columns:170px 1fr;gap:24px;padding:18px 0;border-bottom:1px solid var(--line)}
+.timeline > li:first-child{padding-top:0}
 .timeline .when{color:var(--muted);font-size:.93rem;padding-top:3px}
 .timeline h3{font-family:var(--display);font-weight:700;font-size:1.2rem;margin:0}
 .timeline .game{color:var(--muted);font-size:.95rem;margin:2px 0 8px}
 .timeline .game a{font-weight:700;color:var(--ink)}
 .timeline p{margin:0;max-width:40em}
+.timeline .title{font-weight:700;margin:2px 0 0}
+.timeline ul{margin:6px 0 0;padding-left:1.1em;max-width:42em}
+.timeline ul li{margin:0 0 6px;padding-left:2px}
+.timeline ul li::marker{color:var(--cube)}
 
 .skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px 40px;margin:0}
 .skills dt{font-weight:700;margin-bottom:4px}
@@ -100,7 +104,7 @@ footer p{margin:0 0 20px;color:var(--muted)}
   .featured{grid-template-columns:1fr;gap:36px}
   .hero{padding:48px 0}
   .projects li{grid-template-columns:1fr;gap:6px}
-  .timeline li{grid-template-columns:1fr;gap:4px}
+  .timeline > li{grid-template-columns:1fr;gap:4px}
 }
 </style>
 </head>
@@ -127,35 +131,56 @@ footer p{margin:0 0 20px;color:var(--muted)}
     <p class="lede">From two-week hyper-casual cycles to live games with thousands of players.</p>
     <ol class="timeline" reversed>
       <li>
-        <div class="when">2025 – 2026</div>
+        <div class="when">01/2025 – 07/2026<br>İstanbul, Türkiye</div>
         <div>
-          <h3>SciPlay Turkey</h3>
+          <h3>Sciplay Turkey</h3>
+          <p class="title">Game Developer / Software Engineer</p>
           <p class="game">Match Hotel, live-ops triple-match game. <a href="https://play.google.com/store/apps/details?id=com.ck.tripletiles" target="_blank" rel="noopener">Google Play</a></p>
-          <p>Designed and shipped two live events end to end, built remote config for A/B testing on an epoch-based time system, and wrote the analytics layer behind nearly all live events.</p>
+          <ul>
+            <li>Designed, implemented and tested two live-ops events end to end, Arthur's Deal and Vitamin Bar, owning logic, data, UI and analytics.</li>
+            <li>Designed Vitamin Bar around player freedom. Every rule lives in the logic layer; views only report input. A player can place a piece, close the popup mid-animation, reopen it and carry on instantly. The architecture exists to serve that user experience.</li>
+            <li>Reviewed every change with my team lead in code review sessions, tested and fixed alongside QA, and shaped event design and content with Product and Art.</li>
+            <li>Built remote config structures for A/B testing on an epoch-based time system, replacing weekly manual event entry with looping time windows that schedule correctly worldwide.</li>
+            <li>Wrote the game's audio system from scratch and built the analytics layer behind nearly all live events, giving the data team the economy tracking it needed.</li>
+          </ul>
         </div>
       </li>
       <li>
-        <div class="when">2022 – 2025</div>
+        <div class="when">08/2022 – 01/2025<br>İstanbul, Türkiye</div>
         <div>
           <h3>Banba Games</h3>
+          <p class="title">Game Developer</p>
           <p class="game">Car Racing Simulator: X Street, live open-world racer. <a href="https://play.google.com/store/apps/details?id=com.banbagames.grandstreetracing" target="_blank" rel="noopener">Google Play</a></p>
-          <p>Rewrote the tire-trail mesh system as multithreaded code, from 5 ms to 0.1 ms per update with zero allocations. Built the backend and offline/online sync, and a FishNet physics multiplayer prototype.</p>
+          <ul>
+            <li>Rewrote the vehicle tire-trail mesh system from scratch: multithreaded, writing straight to index and vertex buffers, bypassing Unity's Mesh class. 5 ms to 0.1 ms per update, ~200 KB to zero allocation.</li>
+            <li>Built the title's scalable backend infrastructure and client–server communication from scratch, including the sync layer that reconciles offline play with the player's server-side state.</li>
+            <li>Integrated the Google Play SDK suite, set up and ran the ad service in production, and owned the Android build pipeline end to end, from custom Gradle setup to Play Console releases.</li>
+            <li>Built an online physics-based multiplayer party game prototype on FishNet (Bridge Race combined with Fall Guys-style mechanics) that stayed playable in testing at latencies up to 100 ms.</li>
+          </ul>
         </div>
       </li>
       <li>
-        <div class="when">2021 – 2022</div>
+        <div class="when">08/2021 – 08/2022<br>İstanbul, Türkiye</div>
         <div>
           <h3>Talus Studio</h3>
-          <p class="game">Hyper-casual games, studio closed in 2022. <a href="https://www.linkedin.com/posts/kutanarcanakgul_hyper-casual-games-that-i-developed-at-talus-activity-7191368778008408064-6mT8/" target="_blank" rel="noopener">Gameplay reel</a></p>
-          <p>Shipped 15 titles in 12 months, each from core mechanic to store in two to three weeks, on a shared toolkit that grew with every release.</p>
+          <p class="title">Game Developer</p>
+          <p class="game">Hyper-casual games, studio closed in 2022, titles no longer live. <a href="https://www.linkedin.com/posts/kutanarcanakgul_hyper-casual-games-that-i-developed-at-talus-activity-7191368778008408064-6mT8/" target="_blank" rel="noopener">Gameplay reel</a></p>
+          <ul>
+            <li>Shipped 15 hyper-casual titles to the App Store in 12 months, each taken from core mechanic to full polish in 2–3 weeks: mechanic, UI, levels, SDK integration and store submission.</li>
+            <li>Built a shared, reusable toolkit that carried from title to title and grew with every release; mechanics written for one game regularly became the foundation of the next.</li>
+            <li>Cycles that short force scope and game-feel decisions in days rather than months: tune the controls, timing and juice until the mechanic feels right, cut everything that does not serve it.</li>
+          </ul>
         </div>
       </li>
       <li>
-        <div class="when">2019 – 2020</div>
+        <div class="when">10/2019 – 04/2020<br>Adana, Türkiye</div>
         <div>
           <h3>Imaginite Studios</h3>
+          <p class="title">Game Developer</p>
           <p class="game">Kral Shakir İstanbul, licensed IP title. <a href="https://www.youtube.com/watch?v=sIg5PF1mP_I" target="_blank" rel="noopener">Video</a></p>
-          <p>My first job in games: maintaining and extending gameplay and UI systems.</p>
+          <ul>
+            <li>Maintained and extended existing gameplay and UI systems on a licensed IP title.</li>
+          </ul>
         </div>
       </li>
     </ol>
