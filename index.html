@@ -1,282 +1,566 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kutan Arcan Akgül, Game Developer</title>
 <meta name="description" content="Kutan Arcan Akgül, game developer (Unity, C#). Hyper-casual, hybrid-casual and puzzle games.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎲</text></svg>">
-<title>Kutan Arcan Akgül, Game Developer</title>
+<script>
+(function(){try{var t=localStorage.getItem('kaa-theme'),l=localStorage.getItem('kaa-lang');var r=document.documentElement;if(t==='light'||t==='dark')r.setAttribute('data-theme',t);if(l==='tr'||l==='en'){r.setAttribute('data-lang',l);r.lang=l;}}catch(e){}document.documentElement.classList.add('js');})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
-  --paper:#EEF1F6; --surface:#FFFFFF; --ink:#172033; --muted:#566076; --line:#D2D8E2;
-  --cube:#2B59E8; --cube-deep:#1C3FB0; --paint:#F5B800; --paint-soft:#FBE7A1; --empty:#E3E8F0;
-  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --paper:#0E131C; --surface:#161D2A; --surface-2:#1C2535; --ink:#E6EAF2; --muted:#98A2B5; --line:#263045;
+  --cube:#7391FF; --cube-deep:#5372E8; --on-cube:#0B1020; --paint:#F2B705; --empty:#1F283A;
+  --header-bg:rgba(14,19,28,.78); --shadow:0 20px 50px rgba(0,0,0,.45);
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,-apple-system,sans-serif;
+  --ease:cubic-bezier(.2,.7,.2,1);
+  color-scheme:dark;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --paper:#10151F; --surface:#182030; --ink:#E6EAF2; --muted:#9AA4B7; --line:#2A3449;
-    --cube:#6F8FFF; --cube-deep:#4A68D8; --paint:#E6AC00; --paint-soft:#5A4817; --empty:#212B3E;
-  }
-}
-:root[data-theme="dark"]{
-  --paper:#10151F; --surface:#182030; --ink:#E6EAF2; --muted:#9AA4B7; --line:#2A3449;
-  --cube:#6F8FFF; --cube-deep:#4A68D8; --paint:#E6AC00; --paint-soft:#5A4817; --empty:#212B3E;
+:root[data-theme="light"]{
+  --paper:#EEF1F6; --surface:#FFFFFF; --surface-2:#F5F7FB; --ink:#172033; --muted:#566076; --line:#D2D8E2;
+  --cube:#2B59E8; --cube-deep:#1C3FB0; --on-cube:#FFFFFF; --paint:#F5B800; --empty:#E3E8F0;
+  --header-bg:rgba(238,241,246,.82); --shadow:0 20px 50px rgba(23,32,51,.14);
+  color-scheme:light;
 }
 *{box-sizing:border-box}
 [hidden]{display:none !important}
-html{scroll-behavior:smooth}
-@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration-color:var(--cube);text-decoration-thickness:2px;text-underline-offset:3px}
+html[data-lang="en"] [data-l="tr"], html[data-lang="tr"] [data-l="en"]{display:none !important}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased;transition:background-color .35s ease,color .35s ease;overflow-x:hidden}
+a{color:inherit;text-decoration-color:var(--cube);text-decoration-thickness:2px;text-underline-offset:3px;transition:color .2s ease}
 a:hover{color:var(--cube)}
 :focus-visible{outline:3px solid var(--cube);outline-offset:3px;border-radius:4px}
-img{max-width:100%}
 .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
 
+/* Progress bar */
+.progress{position:fixed;top:0;left:0;height:3px;width:100%;background:var(--cube);transform-origin:0 50%;transform:scaleX(var(--sp,0));z-index:60}
+
+/* Header */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:50;transition:background-color .3s ease,box-shadow .3s ease}
+.topbar.scrolled{background:var(--header-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line)}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{font-family:var(--display);font-weight:800;font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;margin-right:12px;text-decoration:none;opacity:0;transform:translateY(-6px);transition:opacity .3s ease,transform .3s var(--ease);pointer-events:none}
+.topbar.scrolled .brand{opacity:1;transform:none;pointer-events:auto}
+.controls{display:flex;align-items:center;gap:8px}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:999px;padding:3px;background:var(--surface)}
+.seg button{border:0;background:transparent;color:var(--muted);font:700 .8rem/1 var(--body);padding:7px 10px;border-radius:999px;cursor:pointer;transition:background-color .2s ease,color .2s ease}
+.seg button[aria-pressed="true"]{background:var(--cube);color:var(--on-cube)}
+.iconbtn{width:40px;height:40px;display:inline-grid;place-items:center;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);cursor:pointer;transition:border-color .2s ease,transform .2s var(--ease)}
+.iconbtn:hover{border-color:var(--cube)}
+.iconbtn:active{transform:scale(.94)}
+.iconbtn svg{width:20px;height:20px}
+.theme-btn .sun{display:none}
+:root[data-theme="light"] .theme-btn .sun{display:block}
+:root[data-theme="light"] .theme-btn .moon{display:none}
+.burger span{display:block;width:18px;height:2px;background:currentColor;border-radius:2px;transition:transform .3s var(--ease),opacity .2s ease}
+.burger span+span{margin-top:4px}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.burger .lines{display:block}
+
+/* Desktop nav */
+.brand{opacity:1 !important;transform:none !important;pointer-events:auto !important}
+.brand .mono{display:inline-grid;place-items:center;width:44px;height:38px;border-radius:11px;background:var(--cube);color:var(--on-cube);font-size:.8rem;letter-spacing:0;margin-right:10px;vertical-align:middle}
+.brand .nm{vertical-align:middle;opacity:0;transition:opacity .3s ease}
+.topbar.scrolled .brand .nm{opacity:1}
+.mainnav{display:none}
+.mainnav ol{list-style:none;display:flex;gap:4px;margin:0;padding:0}
+.mainnav a{position:relative;display:block;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:700;font-size:.93rem;color:var(--muted);transition:color .2s ease,background-color .2s ease}
+.mainnav a .n{color:var(--cube);margin-right:4px}
+.mainnav a:hover{color:var(--ink);background:var(--surface)}
+.mainnav a.active{color:var(--ink)}
+.mainnav a::after{content:"";position:absolute;left:12px;right:12px;bottom:3px;height:2px;border-radius:2px;background:var(--cube);transform:scaleX(0);transform-origin:0 50%;transition:transform .35s var(--ease)}
+.mainnav a.active::after{transform:scaleX(1)}
+@media (min-width:1000px){
+  .mainnav{display:block}
+  .burger{display:none}
+  .topbar .wrap{max-width:1180px}
+}
+
+/* Drawer */
+.scrim{position:fixed;inset:0;background:rgba(5,8,14,.5);opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:70}
+.scrim.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(340px,86vw);background:var(--surface);border-left:1.5px solid var(--line);box-shadow:var(--shadow);transform:translateX(105%);transition:transform .4s var(--ease);z-index:80;display:flex;flex-direction:column;padding:20px 24px 28px}
+.drawer.open{transform:none}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.drawer-head strong{font-family:var(--display);font-size:1.1rem}
+.drawer nav ol{list-style:none;margin:0;padding:0}
+.drawer nav a{display:flex;align-items:baseline;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);text-decoration:none;font-family:var(--display);font-weight:700;font-size:1.35rem;opacity:0;transform:translateX(24px);transition:opacity .35s ease,transform .45s var(--ease),color .2s ease}
+.drawer.open nav a{opacity:1;transform:none}
+.drawer nav li:nth-child(1) a{transition-delay:.08s}.drawer nav li:nth-child(2) a{transition-delay:.13s}.drawer nav li:nth-child(3) a{transition-delay:.18s}.drawer nav li:nth-child(4) a{transition-delay:.23s}.drawer nav li:nth-child(5) a{transition-delay:.28s}
+.drawer nav a .n{font-family:var(--body);font-size:.8rem;color:var(--muted);font-weight:700;min-width:1.4em}
+.drawer nav a.active{color:var(--cube)}
+.drawer-foot{margin-top:auto;display:flex;flex-direction:column;gap:14px;padding-top:24px}
+.drawer-foot .row{display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--muted);font-size:.93rem}
+
 /* Hero */
-.hero{padding:80px 0 64px}
-h1{font-family:var(--display);font-weight:800;font-size:clamp(2.6rem,6vw,4.4rem);line-height:.98;letter-spacing:-.025em;margin:0 0 18px}
-.role{font-family:var(--display);font-weight:500;font-size:1.3rem;color:var(--muted);margin:0 0 22px}
-.intro{max-width:38em;font-size:1.15rem;margin:0 0 28px}
+.hero{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:min(90vh,740px);padding:112px 0 64px}
+.hero::before{content:"";position:absolute;z-index:-1;right:-10%;top:8%;width:min(620px,80vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--cube) 22%,transparent),transparent);filter:blur(20px);animation:breathe 9s ease-in-out infinite;pointer-events:none}
+@keyframes breathe{50%{opacity:.55;transform:translate(-4%,3%) scale(.92)}}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(2.7rem,6.4vw,4.8rem);line-height:.98;letter-spacing:-.03em;margin:0 0 18px}
+h1 .w{display:inline-block}
+.role{font-family:var(--display);font-weight:500;font-size:1.35rem;color:var(--muted);margin:0 0 22px}
+.intro{max-width:36em;font-size:1.15rem;margin:0 0 30px}
 .links{display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:0;list-style:none}
-.links a,.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border:1.5px solid var(--line);border-radius:999px;text-decoration:none;font-weight:700;font-size:.95rem;background:var(--surface);color:var(--ink);cursor:pointer;font-family:var(--body)}
-.links a:hover,.btn:hover{border-color:var(--cube);color:var(--cube)}
-.btn.primary{background:var(--cube);border-color:var(--cube);color:#fff}
-.btn.primary:hover,.links a.btn.primary:hover{background:var(--cube-deep);border-color:var(--cube-deep);color:#fff}
-.links a.btn.primary{background:var(--cube);border-color:var(--cube);color:#fff}
-.cv-note{font-size:.9rem;color:var(--muted);margin:12px 0 0;min-height:1.4em}
+.links a,.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 17px;border:1.5px solid var(--line);border-radius:999px;text-decoration:none;font-weight:700;font-size:.95rem;background:var(--surface);color:var(--ink);cursor:pointer;font-family:var(--body);transition:border-color .2s ease,color .2s ease,transform .25s var(--ease),background-color .2s ease}
+.links a:hover,.btn:hover{border-color:var(--cube);color:var(--cube);transform:translateY(-2px)}
+.links a.primary,.btn.primary{background:var(--cube);border-color:var(--cube);color:var(--on-cube)}
+.links a.primary:hover,.btn.primary:hover{background:var(--cube-deep);border-color:var(--cube-deep);color:var(--on-cube)}
+.scroll-hint{display:inline-flex;align-items:center;gap:10px;margin-top:44px;color:var(--muted);font-size:.9rem;text-decoration:none}
+.scroll-hint i{width:22px;height:34px;border:2px solid var(--line);border-radius:12px;position:relative}
+.scroll-hint i::after{content:"";position:absolute;left:50%;top:6px;width:4px;height:7px;margin-left:-2px;border-radius:2px;background:var(--cube);animation:wheel 1.8s var(--ease) infinite}
+@keyframes wheel{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(12px)}}
+
+
+/* Reveal system */
+.js .rv{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .8s var(--ease);transition-delay:var(--d,0ms)}
+.js .rv.slide{transform:translateX(-28px)}
+.js .rv.in{opacity:1;transform:none}
+.js .hero .rv{transition-duration:.9s}
+.js h1 .w{opacity:0;transform:translateY(.45em) rotate(3deg);transition:opacity .8s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0ms)}
+.js h1.in .w{opacity:1;transform:none}
 
 /* Sections */
-section{padding:56px 0;border-top:1.5px solid var(--line)}
-h2.sec{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,3.4vw,2.3rem);letter-spacing:-.02em;line-height:1.1;margin:0 0 10px}
-.lede{color:var(--muted);max-width:40em;margin:0 0 32px}
+section{padding:72px 0;border-top:1.5px solid var(--line)}
+h2.sec{font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,3.6vw,2.5rem);letter-spacing:-.02em;line-height:1.1;margin:0 0 10px;position:relative;padding-bottom:14px}
+h2.sec::after{content:"";position:absolute;left:0;bottom:0;height:4px;width:56px;border-radius:4px;background:var(--cube);transform-origin:0 50%;transition:transform .8s var(--ease) .25s}
+.js h2.sec:not(.in)::after{transform:scaleX(0)}
+.lede{color:var(--muted);max-width:40em;margin:0 0 36px}
+
+/* Stats */
+.stats{border-top:1.5px solid var(--line);padding:40px 0}
+.stats ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.stats li{background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:22px 22px 20px;transition:border-color .25s ease,opacity .7s var(--ease),transform .8s var(--ease)}
+.stats li:hover{border-color:var(--cube)}
+.stats .num{display:block;font-family:var(--display);font-weight:800;font-size:clamp(2.2rem,4vw,3rem);line-height:1;letter-spacing:-.02em;color:var(--cube);font-variant-numeric:tabular-nums}
+.stats .lbl{display:block;margin-top:10px;color:var(--muted);font-size:.95rem;line-height:1.45}
+@media (max-width:640px){.stats ul{grid-template-columns:1fr}.stats li{display:flex;align-items:center;gap:18px;padding:18px 20px}.stats .lbl{margin-top:0}.stats .num{min-width:1.6em}}
+
+/* Tags */
+.body .tags{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;padding:0}
+.body .tags li{margin:0;font-size:.82rem;font-weight:700;padding:5px 11px;border-radius:999px;background:color-mix(in srgb,var(--cube) 14%,transparent);color:var(--cube);border:1px solid color-mix(in srgb,var(--cube) 30%,transparent)}
+.js .tags li{opacity:0;transform:scale(.85);transition:opacity .4s ease,transform .45s var(--ease);transition-delay:var(--d,0ms)}
+.js .tags.in li{opacity:1;transform:none}
+
+/* Timeline */
+.tl{--railx:190px;position:relative}
+.timeline{list-style:none;margin:0;padding:0}
+.tl::before,.tl .fill{content:"";position:absolute;left:var(--railx);top:6px;bottom:6px;width:2px;background:var(--line);border-radius:2px}
+.tl .fill{background:var(--cube);bottom:auto;height:calc((100% - 12px) * var(--p,0));transition:height .15s linear}
+.entry{display:grid;grid-template-columns:var(--railx) 1fr;padding:0 0 40px}
+.entry:last-child{padding-bottom:0}
+.when{color:var(--muted);font-size:.93rem;padding:3px 24px 0 0;display:flex;flex-direction:column}
+.body{position:relative;padding-left:32px}
+.dot{position:absolute;left:-6px;top:7px;width:14px;height:14px;border-radius:4px;background:var(--surface);border:2.5px solid var(--line);transform:rotate(45deg) scale(.6);transition:background-color .4s ease,border-color .4s ease,transform .5s var(--ease)}
+.entry.lit .dot{background:var(--cube);border-color:var(--cube);transform:rotate(45deg) scale(1)}
+.body h3{font-family:var(--display);font-weight:700;font-size:1.3rem;margin:0}
+.body .title{font-weight:700;margin:2px 0 0}
+.body .game{color:var(--muted);font-size:.95rem;margin:2px 0 10px}
+.body .game a{font-weight:700;color:var(--ink)}
+.body ul{margin:0;padding-left:1.1em;max-width:44em}
+.body ul li{margin:0 0 7px;padding-left:2px}
+.body ul li::marker{color:var(--cube)}
 
 /* Featured */
 .featured{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
-.featured h3{font-family:var(--display);font-weight:700;font-size:1.6rem;margin:0 0 12px;letter-spacing:-.01em}
+.featured h3{font-family:var(--display);font-weight:700;font-size:1.6rem;margin:0 0 12px;letter-spacing:-.01em;line-height:1.2}
 .featured p{margin:0 0 16px;max-width:34em}
-.stages{list-style:none;margin:0;padding:0;counter-reset:s;border-left:2px solid var(--line)}
-.stages li{counter-increment:s;position:relative;padding:5px 0 5px 22px;display:flex;justify-content:space-between;gap:16px;font-size:.97rem}
+.stages{list-style:none;margin:0;padding:0;border-left:2px solid var(--line)}
+.stages li{position:relative;padding:6px 0 6px 22px;display:flex;justify-content:space-between;gap:16px;font-size:.97rem}
 .stages li::before{content:"";position:absolute;left:-7px;top:50%;width:12px;height:12px;margin-top:-6px;border-radius:3px;background:var(--empty);border:2px solid var(--line)}
 .stages li.done::before{background:var(--paint);border-color:var(--paint)}
 .stages li.now::before{background:var(--cube);border-color:var(--cube)}
+.stages li.now::after{content:"";position:absolute;left:-7px;top:50%;width:12px;height:12px;margin-top:-6px;border-radius:3px;border:2px solid var(--cube);animation:ping 2s var(--ease) infinite}
+@keyframes ping{0%{transform:scale(1);opacity:.9}100%{transform:scale(2.4);opacity:0}}
 .stages li.now{font-weight:700}
 .stages .q{color:var(--muted);font-size:.9rem;text-align:right}
-.stages .group{padding-top:16px;color:var(--muted);font-size:.85rem;font-weight:700}
-.stages .group::before{display:none}
 
-/* Project list */
+/* Projects */
 .projects{list-style:none;margin:0;padding:0}
-.projects li{display:grid;grid-template-columns:220px 1fr auto;gap:24px;padding:20px 0;border-bottom:1px solid var(--line);align-items:baseline}
-.projects li:first-child{padding-top:0}
+.projects li{display:grid;grid-template-columns:230px 1fr auto;gap:24px;padding:20px 16px;margin:0 -16px;border-bottom:1px solid var(--line);align-items:baseline;border-radius:14px;transition:background-color .25s ease,opacity .7s var(--ease),transform .8s var(--ease)}
+.projects li:hover{background:var(--surface)}
 .projects h3{font-family:var(--display);font-weight:700;font-size:1.2rem;margin:0}
 .projects p{margin:0;max-width:36em}
 .projects .tag{display:block;font-size:.85rem;color:var(--muted);margin-top:2px}
 .projects .plinks{display:flex;gap:14px;font-size:.93rem;font-weight:700;white-space:nowrap}
 
-/* Timeline */
-.timeline{list-style:none;margin:0;padding:0}
-.timeline > li{display:grid;grid-template-columns:170px 1fr;gap:24px;padding:18px 0;border-bottom:1px solid var(--line)}
-.timeline > li:first-child{padding-top:0}
-.timeline .when{color:var(--muted);font-size:.93rem;padding-top:3px}
-.timeline h3{font-family:var(--display);font-weight:700;font-size:1.2rem;margin:0}
-.timeline .game{color:var(--muted);font-size:.95rem;margin:2px 0 8px}
-.timeline .game a{font-weight:700;color:var(--ink)}
-.timeline p{margin:0;max-width:40em}
-.timeline .title{font-weight:700;margin:2px 0 0}
-.timeline ul{margin:6px 0 0;padding-left:1.1em;max-width:42em}
-.timeline ul li{margin:0 0 6px;padding-left:2px}
-.timeline ul li::marker{color:var(--cube)}
-
-.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px 40px;margin:0}
+/* Skills */
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:0}
+.skills > div{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:18px 20px;transition:border-color .25s ease,opacity .7s var(--ease),transform .8s var(--ease)}
+.skills > div:hover{border-color:var(--cube)}
 .skills dt{font-weight:700;margin-bottom:4px}
 .skills dd{margin:0;color:var(--muted)}
 
-footer{border-top:1.5px solid var(--line);padding:48px 0 64px}
-footer h2{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 8px;letter-spacing:-.02em}
-footer p{margin:0 0 20px;color:var(--muted)}
+/* Contact */
+.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.ccard{display:flex;gap:16px;align-items:center;padding:20px;border-radius:18px;background:var(--surface);border:1.5px solid var(--line);text-decoration:none;color:var(--ink);text-align:left;font:inherit;cursor:pointer;width:100%;transition:border-color .25s ease,transform .3s var(--ease),box-shadow .3s ease,opacity .7s var(--ease)}
+div.ccard{cursor:default}
+a.ccard:hover,button.ccard:hover,.js a.ccard.rv.in:hover,.js button.ccard.rv.in:hover{border-color:var(--cube);transform:translateY(-4px);box-shadow:var(--shadow);color:var(--ink)}
+.ccard .ic{flex:none;width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:color-mix(in srgb,var(--cube) 15%,transparent);color:var(--cube);transition:background-color .25s ease,color .25s ease}
+a.ccard:hover .ic,button.ccard:hover .ic{background:var(--cube);color:var(--on-cube)}
+.ccard .ic svg{width:22px;height:22px}
+.ccard .k{display:block;font-size:.85rem;color:var(--muted);font-weight:700}
+.ccard .v{display:block;font-weight:700;font-size:.97rem;overflow-wrap:break-word}
+@media (max-width:860px){.contact-grid{grid-template-columns:1fr}}
+@media (min-width:861px) and (max-width:1000px){.contact-grid{grid-template-columns:repeat(2,1fr)}}
+.sitefoot{border-top:1.5px solid var(--line);padding:28px 0 40px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:.9rem}
+.sitefoot a{font-weight:700;color:var(--ink)}
 
 @media (max-width:860px){
+  .hero{min-height:0;padding:104px 0 56px}
   .featured{grid-template-columns:1fr;gap:36px}
-  .hero{padding:48px 0}
+  .tl{--railx:6px}
+  .entry{grid-template-columns:1fr;padding-left:32px}
+  .when{padding:0 0 4px;flex-direction:row;gap:10px;flex-wrap:wrap}
+  .body{padding-left:0}
+  .dot{left:-32px}
   .projects li{grid-template-columns:1fr;gap:6px}
-  .timeline > li{grid-template-columns:1fr;gap:4px}
+  .seg button{padding:7px 8px}
+  .brand{font-size:.92rem}
+}
+@media (max-width:520px){
+  .brand .nm{display:none}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none !important;transition-duration:.01ms !important;transition-delay:0ms !important}
+  .js .rv,.js h1 .w{opacity:1 !important;transform:none !important}
 }
 </style>
 </head>
 <body>
-<main class="wrap">
+<div class="progress" aria-hidden="true"></div>
 
+<header class="topbar" id="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Kutan Arcan Akgül, back to top"><span class="mono" aria-hidden="true">KAA</span><span class="nm">Kutan Arcan Akgül</span></a>
+    <nav class="mainnav" aria-label="Sections">
+      <ol>
+        <li><a href="#experience"><span class="n">01.</span><span data-l="en">Experience</span><span data-l="tr" lang="tr">Deneyim</span></a></li>
+        <li><a href="#cube-roll"><span class="n">02.</span>Cube Roll</a></li>
+        <li><a href="#projects"><span class="n">03.</span><span data-l="en">Projects</span><span data-l="tr" lang="tr">Projeler</span></a></li>
+        <li><a href="#skills"><span class="n">04.</span><span data-l="en">Skills</span><span data-l="tr" lang="tr">Yetenekler</span></a></li>
+        <li><a href="#contact"><span class="n">05.</span><span data-l="en">Contact</span><span data-l="tr" lang="tr">İletişim</span></a></li>
+      </ol>
+    </nav>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Language">
+        <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-set-lang="tr" aria-pressed="false">TR</button>
+      </div>
+      <button class="iconbtn theme-btn" type="button" aria-label="Switch to light mode" title="Theme">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M2 12h2.2M19.8 12H22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></svg>
+      </button>
+      <button class="iconbtn burger" type="button" aria-label="Open contents" aria-expanded="false" aria-controls="drawer">
+        <span class="lines" aria-hidden="true"><span></span><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Contents" aria-hidden="true">
+  <div class="drawer-head">
+    <strong><span data-l="en">Contents</span><span data-l="tr" lang="tr">İçerik</span></strong>
+    <button class="iconbtn close-drawer" type="button" aria-label="Close contents">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <nav>
+    <ol>
+      <li><a href="#experience"><span class="n">01</span><span data-l="en">Experience</span><span data-l="tr" lang="tr">Deneyim</span></a></li>
+      <li><a href="#cube-roll"><span class="n">02</span>Cube Roll Puzzle</a></li>
+      <li><a href="#projects"><span class="n">03</span><span data-l="en">Projects</span><span data-l="tr" lang="tr">Projeler</span></a></li>
+      <li><a href="#skills"><span class="n">04</span><span data-l="en">Skills</span><span data-l="tr" lang="tr">Yetenekler</span></a></li>
+      <li><a href="#contact"><span class="n">05</span><span data-l="en">Contact</span><span data-l="tr" lang="tr">İletişim</span></a></li>
+    </ol>
+  </nav>
+  <div class="drawer-foot">
+    <div class="row"><span><span data-l="en">Language</span><span data-l="tr" lang="tr">Dil</span></span>
+      <div class="seg" role="group" aria-label="Language">
+        <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-set-lang="tr" aria-pressed="false">TR</button>
+      </div>
+    </div>
+    <div class="row"><span><span data-l="en">Theme</span><span data-l="tr" lang="tr">Tema</span></span>
+      <div class="seg" role="group" aria-label="Theme">
+        <button type="button" data-set-theme="dark" aria-pressed="true"><span data-l="en">Dark</span><span data-l="tr" lang="tr">Koyu</span></button>
+        <button type="button" data-set-theme="light" aria-pressed="false"><span data-l="en">Light</span><span data-l="tr" lang="tr">Açık</span></button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<main class="wrap" id="top">
   <header class="hero">
     <div>
-      <h1>Kutan Arcan Akgül</h1>
-      <p class="role">Game Developer, Unity &amp; C#</p>
-      <p class="intro">Six years building mobile games: fifteen hyper-casual titles, a live open-world racer and a live puzzle game with its own live events. I like simple rules with depth hidden inside them, and code that keeps those rules separate from what the player sees.</p>
-      <ul class="links">
+      <h1 class="reveal-h1"><span class="w" style="--d:0ms">Kutan</span> <span class="w" style="--d:90ms">Arcan</span> <span class="w" style="--d:180ms">Akgül</span></h1>
+      <p class="role rv" style="--d:320ms"><span data-l="en">Game Developer, Unity &amp; C#</span><span data-l="tr" lang="tr">Oyun Geliştirici, Unity &amp; C#</span></p>
+      <p class="intro rv" style="--d:420ms"><span data-l="en">Six years building mobile games: fifteen hyper-casual titles, a live open-world racer and a live puzzle game with its own live events. I like simple rules with depth hidden inside them, and code that keeps those rules separate from what the player sees.</span><span data-l="tr" lang="tr">Altı yıldır mobil oyun geliştiriyorum. Bu süreçte on beş hyper-casual oyun çıkardım; yayındaki bir açık dünya yarış oyununda ve kendi live event'leri olan canlı bir puzzle oyununda çalıştım. İçinde derinlik saklayan basit kurallar tasarlamayı ve bu kuralları oyuncunun ekranda gördüğünden ayrı tutan kod yazmayı seviyorum.</span></p>
+      <ul class="links rv" style="--d:520ms">
         <li><a href="https://github.com/Kutanarcan" target="_blank" rel="noopener">GitHub</a></li>
         <li><a href="https://kutanarcanakgul.itch.io" target="_blank" rel="noopener">itch.io</a></li>
         <li><a href="https://linkedin.com/in/kutanarcanakgul" target="_blank" rel="noopener">LinkedIn</a></li>
-        <li><a href="mailto:kutanarcanakgul@gmail.com">Email me</a></li>
-        <li><a class="btn primary" href="Kutan_Arcan_Akgul_CV_2026.pdf" download>Download CV</a></li>
+        <li><a href="mailto:kutanarcanakgul@gmail.com"><span data-l="en">Email me</span><span data-l="tr" lang="tr">E-posta gönder</span></a></li>
+        <li><a class="btn primary" href="Kutan_Arcan_Akgul_CV_2026.pdf" download><span data-l="en">Download CV</span><span data-l="tr" lang="tr">CV'yi indir</span></a></li>
       </ul>
-          </div>
+    </div>
   </header>
 
+  <div class="stats" aria-label="Highlights">
+    <ul>
+      <li class="rv" style="--d:0ms"><span class="num" data-count="6">6</span><span class="lbl"><span data-l="en">years building mobile games</span><span data-l="tr" lang="tr">yıldır mobil oyun geliştiriyorum</span></span></li>
+      <li class="rv" style="--d:90ms"><span class="num" data-count="15">15</span><span class="lbl"><span data-l="en">hyper-casual titles shipped in 12 months</span><span data-l="tr" lang="tr">12 ayda yayınladığım hyper-casual oyun</span></span></li>
+      <li class="rv" style="--d:180ms"><span class="num" data-count="2">2</span><span class="lbl"><span data-l="en">live games with live-ops and events</span><span data-l="tr" lang="tr">live-ops ve event'lerle yaşayan, üzerinde çalıştığım canlı oyun</span></span></li>
+    </ul>
+  </div>
+
   <section id="experience" aria-labelledby="ex-title">
-    <h2 class="sec" id="ex-title">Experience</h2>
-    <p class="lede">From two-week hyper-casual cycles to live games with thousands of players.</p>
-    <ol class="timeline" reversed>
-      <li>
-        <div class="when">01/2025 – 07/2026<br>İstanbul, Türkiye</div>
-        <div>
-          <h3>Sciplay Turkey</h3>
-          <p class="title">Game Developer / Software Engineer</p>
-          <p class="game">Match Hotel, live-ops triple-match game. <a href="https://play.google.com/store/apps/details?id=com.ck.tripletiles" target="_blank" rel="noopener">Google Play</a></p>
-          <ul>
-            <li>Designed, implemented and tested two live-ops events end to end, Arthur's Deal and Vitamin Bar, owning logic, data, UI and analytics.</li>
-            <li>Designed Vitamin Bar around player freedom. Every rule lives in the logic layer; views only report input. A player can place a piece, close the popup mid-animation, reopen it and carry on instantly. The architecture exists to serve that user experience.</li>
-            <li>Reviewed every change with my team lead in code review sessions, tested and fixed alongside QA, and shaped event design and content with Product and Art.</li>
-            <li>Built remote config structures for A/B testing on an epoch-based time system, replacing weekly manual event entry with looping time windows that schedule correctly worldwide.</li>
-            <li>Wrote the game's audio system from scratch and built the analytics layer behind nearly all live events, giving the data team the economy tracking it needed.</li>
-          </ul>
+    <h2 class="sec rv" id="ex-title"><span data-l="en">Experience</span><span data-l="tr" lang="tr">Deneyim</span></h2>
+    <p class="lede rv"><span data-l="en">From two-week hyper-casual cycles to live games with thousands of players.</span><span data-l="tr" lang="tr">İki haftalık hyper-casual döngülerinden binlerce oyuncuya ulaşan canlı oyunlara.</span></p>
+    <div class="tl" id="timeline">
+      <span class="fill" aria-hidden="true"></span>
+      <ol class="timeline">
+      <li class="entry">
+        <div class="when rv"><span>01/2025 – 07/2026</span><span>İstanbul, Türkiye</span></div>
+        <div class="body">
+          <span class="dot" aria-hidden="true"></span>
+          <h3 class="rv">Sciplay Turkey</h3>
+          <p class="title rv"><span data-l="en">Game Developer / Software Engineer</span><span data-l="tr" lang="tr">Oyun Geliştirici / Yazılım Mühendisi</span></p>
+          <p class="game rv"><span data-l="en">Match Hotel, live-ops triple-match game. <a href="https://play.google.com/store/apps/details?id=com.ck.tripletiles" target="_blank" rel="noopener">Google Play</a></span><span data-l="tr" lang="tr">Match Hotel, live-ops odaklı bir triple-match oyunu. <a href="https://play.google.com/store/apps/details?id=com.ck.tripletiles" target="_blank" rel="noopener">Google Play</a></span></p>
+          <ul><li class="rv"><span data-l="en">Designed, implemented and tested two live-ops events end to end, Arthur's Deal and Vitamin Bar, owning logic, data, UI and analytics.</span><span data-l="tr" lang="tr">Arthur's Deal ve Vitamin Bar adlı iki live-ops event'ini uçtan uca tasarladım, geliştirdim ve test ettim; logic, data, UI ve analytics tarafları bendeydi.</span></li><li class="rv"><span data-l="en">Designed Vitamin Bar around player freedom. Every rule lives in the logic layer; views only report input. A player can place a piece, close the popup mid-animation, reopen it and carry on instantly. The architecture exists to serve that user experience.</span><span data-l="tr" lang="tr">Vitamin Bar'ı oyuncu özgürlüğü üzerine kurguladım. Tüm kurallar logic katmanında duruyor, view'lar yalnızca input'u iletiyor. Oyuncu bir parçayı yerleştirip animasyon sürerken popup'ı kapatabiliyor, tekrar açtığında kaldığı yerden anında devam edebiliyor. Mimari tamamen bu kullanıcı deneyimine hizmet etmek için var.</span></li><li class="rv"><span data-l="en">Reviewed every change with my team lead in code review sessions, tested and fixed alongside QA, and shaped event design and content with Product and Art.</span><span data-l="tr" lang="tr">Her değişikliği takım liderimle code review oturumlarında inceledim. QA ile yan yana test edip hataları giderdim; event tasarımını ve içeriğini de Product ve Art ekipleriyle şekillendirdim.</span></li><li class="rv"><span data-l="en">Built remote config structures for A/B testing on an epoch-based time system, replacing weekly manual event entry with looping time windows that schedule correctly worldwide.</span><span data-l="tr" lang="tr">A/B testleri için epoch tabanlı bir zaman sistemi üzerine remote config yapıları kurdum. Haftalık manuel event girişinin yerini, dünyanın her yerinde doğru zamanlanan döngüsel zaman pencereleri aldı.</span></li><li class="rv"><span data-l="en">Wrote the game's audio system from scratch and built the analytics layer behind nearly all live events, giving the data team the economy tracking it needed.</span><span data-l="tr" lang="tr">Oyunun ses sistemini sıfırdan yazdım. Neredeyse tüm live event'lerin arkasındaki analytics katmanını da kurarak data ekibinin ihtiyaç duyduğu ekonomi takibini mümkün kıldım.</span></li></ul>
+          <ul class="tags" aria-label="Technologies"><li>Unity</li><li>C#</li><li>Live-ops</li><li>Remote Config</li><li>A/B testing</li><li>Analytics</li><li>Audio</li></ul>
         </div>
       </li>
-      <li>
-        <div class="when">08/2022 – 01/2025<br>İstanbul, Türkiye</div>
-        <div>
-          <h3>Banba Games</h3>
-          <p class="title">Game Developer</p>
-          <p class="game">Car Racing Simulator: X Street, live open-world racer. <a href="https://play.google.com/store/apps/details?id=com.banbagames.grandstreetracing" target="_blank" rel="noopener">Google Play</a></p>
-          <ul>
-            <li>Rewrote the vehicle tire-trail mesh system from scratch: multithreaded, writing straight to index and vertex buffers, bypassing Unity's Mesh class. 5 ms to 0.1 ms per update, ~200 KB to zero allocation.</li>
-            <li>Built the title's scalable backend infrastructure and client–server communication from scratch, including the sync layer that reconciles offline play with the player's server-side state.</li>
-            <li>Integrated the Google Play SDK suite, set up and ran the ad service in production, and owned the Android build pipeline end to end, from custom Gradle setup to Play Console releases.</li>
-            <li>Built an online physics-based multiplayer party game prototype on FishNet (Bridge Race combined with Fall Guys-style mechanics) that stayed playable in testing at latencies up to 100 ms.</li>
-          </ul>
+      <li class="entry">
+        <div class="when rv"><span>08/2022 – 01/2025</span><span>İstanbul, Türkiye</span></div>
+        <div class="body">
+          <span class="dot" aria-hidden="true"></span>
+          <h3 class="rv">Banba Games</h3>
+          <p class="title rv"><span data-l="en">Game Developer</span><span data-l="tr" lang="tr">Oyun Geliştirici</span></p>
+          <p class="game rv"><span data-l="en">Car Racing Simulator: X Street, live open-world racer. <a href="https://play.google.com/store/apps/details?id=com.banbagames.grandstreetracing" target="_blank" rel="noopener">Google Play</a></span><span data-l="tr" lang="tr">Car Racing Simulator: X Street, yayındaki açık dünya yarış oyunu. <a href="https://play.google.com/store/apps/details?id=com.banbagames.grandstreetracing" target="_blank" rel="noopener">Google Play</a></span></p>
+          <ul><li class="rv"><span data-l="en">Rewrote the vehicle tire-trail mesh system from scratch: multithreaded, writing straight to index and vertex buffers, bypassing Unity's Mesh class. 5 ms to 0.1 ms per update, ~200 KB to zero allocation.</span><span data-l="tr" lang="tr">Araç lastik izi mesh sistemini sıfırdan yeniden yazdım: multithreaded çalışan, Unity'nin Mesh sınıfını atlayıp doğrudan index ve vertex buffer'lara yazan bir yapı. Güncelleme süresi 5 ms'den 0,1 ms'ye, ~200 KB'lık allocation ise sıfıra indi.</span></li><li class="rv"><span data-l="en">Built the title's scalable backend infrastructure and client–server communication from scratch, including the sync layer that reconciles offline play with the player's server-side state.</span><span data-l="tr" lang="tr">Oyunun ölçeklenebilir backend altyapısını ve client–server iletişimini sıfırdan kurdum. Offline oynanışı oyuncunun sunucudaki verisiyle uzlaştıran senkronizasyon katmanı da buna dahil.</span></li><li class="rv"><span data-l="en">Integrated the Google Play SDK suite, set up and ran the ad service in production, and owned the Android build pipeline end to end, from custom Gradle setup to Play Console releases.</span><span data-l="tr" lang="tr">Google Play SDK paketini entegre ettim, reklam servisini canlı ortamda kurup yönettim. Özel Gradle kurulumundan Play Console yayınlarına kadar Android build sürecinin tamamı benim sorumluluğumdaydı.</span></li><li class="rv"><span data-l="en">Built an online physics-based multiplayer party game prototype on FishNet (Bridge Race combined with Fall Guys-style mechanics) that stayed playable in testing at latencies up to 100 ms.</span><span data-l="tr" lang="tr">FishNet ile, Bridge Race ve Fall Guys tarzı mekanikleri birleştiren online, fizik tabanlı bir multiplayer parti oyunu prototipi geliştirdim. Oyun, testlerde 100 ms'ye varan gecikmelerde bile oynanabilir kaldı.</span></li></ul>
+          <ul class="tags" aria-label="Technologies"><li>Unity</li><li>C#</li><li>Multithreading</li><li>Mesh buffers</li><li>Backend</li><li>FishNet</li><li>Google Play SDK</li><li>Gradle</li></ul>
         </div>
       </li>
-      <li>
-        <div class="when">08/2021 – 08/2022<br>İstanbul, Türkiye</div>
-        <div>
-          <h3>Talus Studio</h3>
-          <p class="title">Game Developer</p>
-          <p class="game">Hyper-casual games, studio closed in 2022, titles no longer live. <a href="https://www.linkedin.com/posts/kutanarcanakgul_hyper-casual-games-that-i-developed-at-talus-activity-7191368778008408064-6mT8/" target="_blank" rel="noopener">Gameplay reel</a></p>
-          <ul>
-            <li>Shipped 15 hyper-casual titles to the App Store in 12 months, each taken from core mechanic to full polish in 2–3 weeks: mechanic, UI, levels, SDK integration and store submission.</li>
-            <li>Built a shared, reusable toolkit that carried from title to title and grew with every release; mechanics written for one game regularly became the foundation of the next.</li>
-            <li>Cycles that short force scope and game-feel decisions in days rather than months: tune the controls, timing and juice until the mechanic feels right, cut everything that does not serve it.</li>
-          </ul>
+      <li class="entry">
+        <div class="when rv"><span>08/2021 – 08/2022</span><span>İstanbul, Türkiye</span></div>
+        <div class="body">
+          <span class="dot" aria-hidden="true"></span>
+          <h3 class="rv">Talus Studio</h3>
+          <p class="title rv"><span data-l="en">Game Developer</span><span data-l="tr" lang="tr">Oyun Geliştirici</span></p>
+          <p class="game rv"><span data-l="en">Hyper-casual games, studio closed in 2022, titles no longer live. <a href="https://www.linkedin.com/posts/kutanarcanakgul_hyper-casual-games-that-i-developed-at-talus-activity-7191368778008408064-6mT8/" target="_blank" rel="noopener">Gameplay reel</a></span><span data-l="tr" lang="tr">Hyper-casual oyunlar. Stüdyo 2022'de kapandı, oyunlar artık yayında değil. <a href="https://www.linkedin.com/posts/kutanarcanakgul_hyper-casual-games-that-i-developed-at-talus-activity-7191368778008408064-6mT8/" target="_blank" rel="noopener">Oynanış videosu</a></span></p>
+          <ul><li class="rv"><span data-l="en">Shipped 15 hyper-casual titles to the App Store in 12 months, each taken from core mechanic to full polish in 2–3 weeks: mechanic, UI, levels, SDK integration and store submission.</span><span data-l="tr" lang="tr">12 ayda App Store'a 15 hyper-casual oyun çıkardım. Her birini 2–3 haftada çekirdek mekanikten son rötuşlarına kadar tamamladım: mekanik, UI, level'lar, SDK entegrasyonu ve mağaza yayını.</span></li><li class="rv"><span data-l="en">Built a shared, reusable toolkit that carried from title to title and grew with every release; mechanics written for one game regularly became the foundation of the next.</span><span data-l="tr" lang="tr">Oyundan oyuna taşınan ve her yayında büyüyen, ortak kullanılabilir bir araç seti oluşturdum. Bir oyun için yazdığım mekanikler çoğu zaman bir sonrakinin temeli oldu.</span></li><li class="rv"><span data-l="en">Cycles that short force scope and game-feel decisions in days rather than months: tune the controls, timing and juice until the mechanic feels right, cut everything that does not serve it.</span><span data-l="tr" lang="tr">Bu kadar kısa döngüler, kapsam ve oyun hissi kararlarını aylar yerine günler içinde vermeyi gerektiriyor: Mekanik doğru hissettirene kadar kontrolleri, zamanlamayı ve juice'u ayarlamak, ona hizmet etmeyen her şeyi çıkarmak.</span></li></ul>
+          <ul class="tags" aria-label="Technologies"><li>Unity</li><li>C#</li><li>Hyper-casual</li><li>Rapid prototyping</li><li>SDK integration</li><li>App Store</li></ul>
         </div>
       </li>
-      <li>
-        <div class="when">10/2019 – 04/2020<br>Adana, Türkiye</div>
-        <div>
-          <h3>Imaginite Studios</h3>
-          <p class="title">Game Developer</p>
-          <p class="game">Kral Shakir İstanbul, licensed IP title. <a href="https://www.youtube.com/watch?v=sIg5PF1mP_I" target="_blank" rel="noopener">Video</a></p>
-          <ul>
-            <li>Maintained and extended existing gameplay and UI systems on a licensed IP title.</li>
-          </ul>
+      <li class="entry">
+        <div class="when rv"><span>10/2019 – 04/2020</span><span>Adana, Türkiye</span></div>
+        <div class="body">
+          <span class="dot" aria-hidden="true"></span>
+          <h3 class="rv">Imaginite Studios</h3>
+          <p class="title rv"><span data-l="en">Game Developer</span><span data-l="tr" lang="tr">Oyun Geliştirici</span></p>
+          <p class="game rv"><span data-l="en">Kral Shakir İstanbul, licensed IP title. <a href="https://www.youtube.com/watch?v=sIg5PF1mP_I" target="_blank" rel="noopener">Video</a></span><span data-l="tr" lang="tr">Kral Shakir İstanbul, lisanslı IP oyunu. <a href="https://www.youtube.com/watch?v=sIg5PF1mP_I" target="_blank" rel="noopener">Video</a></span></p>
+          <ul><li class="rv"><span data-l="en">Maintained and extended existing gameplay and UI systems on a licensed IP title.</span><span data-l="tr" lang="tr">Lisanslı bir IP oyununda mevcut gameplay ve UI sistemlerinin bakımını üstlendim ve bu sistemleri geliştirdim.</span></li></ul>
+          <ul class="tags" aria-label="Technologies"><li>Unity</li><li>C#</li><li>Gameplay</li><li>UI</li></ul>
         </div>
       </li>
-    </ol>
+      </ol>
+    </div>
   </section>
 
   <section id="cube-roll" aria-labelledby="cr-title">
-    <h2 class="sec" id="cr-title">Cube Roll Puzzle</h2>
-    <p class="lede">My current project: an open-source hybrid-casual puzzle game, built stage by stage.</p>
+    <h2 class="sec rv" id="cr-title">Cube Roll Puzzle</h2>
+    <p class="lede rv"><span data-l="en">My current project: an open-source hybrid-casual puzzle game, built stage by stage.</span><span data-l="tr" lang="tr">Şu anki projem: adım adım geliştirdiğim, açık kaynak bir hybrid-casual puzzle oyunu.</span></p>
     <div class="featured">
       <div>
-        <h3>A full hybrid-casual process, start to finish</h3>
-        <p>I'm building Cube Roll Puzzle to experience the whole hybrid-casual journey myself, from the first prototype to LiveOps. In past roles I worked on parts of that path; here I own every stage.</p>
-        <p>Each stage has to answer one question before the next begins, and every step forward is a written go, iterate, pivot or kill decision. The market and player data are simulated; the development and the process are real.</p>
-        <p>The production core is pure C#, tested without opening Unity, with a thin view layer on top. AI works as a pair programmer under rule sets I wrote, and every phase is reviewed by hand.</p>
-        <ul class="links" style="margin-top:22px">
-          <li><a href="https://github.com/Kutanarcan/CubeRollPuzzle" target="_blank" rel="noopener">View on GitHub</a></li>
+        <h3 class="rv"><span data-l="en">A full hybrid-casual process, start to finish</span><span data-l="tr" lang="tr">Uçtan uca bir hybrid-casual süreci</span></h3>
+        <p class="rv"><span data-l="en">I'm building Cube Roll Puzzle to experience the whole hybrid-casual journey myself, from the first prototype to LiveOps. In past roles I worked on parts of that path; here I own every stage.</span><span data-l="tr" lang="tr">Cube Roll Puzzle'ı, bir hybrid-casual oyunun ilk prototipten LiveOps'a uzanan yolculuğunu baştan sona kendim deneyimlemek için geliştiriyorum. Önceki işlerimde bu yolun farklı parçalarında çalıştım; burada her aşama benim sorumluluğumda.</span></p>
+        <p class="rv"><span data-l="en">Each stage has to answer one question before the next begins, and every step forward is a written go, iterate, pivot or kill decision. The market and player data are simulated; the development and the process are real.</span><span data-l="tr" lang="tr">Her aşama, bir sonraki başlamadan önce tek bir soruya cevap vermek zorunda. İleriye atılan her adım, yazılı bir go, iterate, pivot ya da kill kararına dayanıyor. Pazar ve oyuncu verileri simüle; geliştirme ve süreç ise gerçek.</span></p>
+        <p class="rv"><span data-l="en">The production core is pure C#, tested without opening Unity, with a thin view layer on top. AI works as a pair programmer under rule sets I wrote, and every phase is reviewed by hand.</span><span data-l="tr" lang="tr">Production çekirdeği saf C# ile yazılıyor ve Unity açılmadan test edilebiliyor; üzerinde ince bir view katmanı bulunuyor. AI'ı, kendi yazdığım kural setleri çerçevesinde bir pair programmer olarak kullanıyor ve her aşamayı elle gözden geçiriyorum.</span></p>
+        <ul class="links rv" style="margin-top:22px">
+          <li><a class="primary" href="https://github.com/Kutanarcan/CubeRollPuzzle" target="_blank" rel="noopener"><span data-l="en">View on GitHub</span><span data-l="tr" lang="tr">GitHub'da incele</span></a></li>
         </ul>
       </div>
       <ol class="stages" aria-label="Project stages">
-        <li class="done"><span>Planning</span><span class="q">What is the game?</span></li>
-        <li class="now"><span>Prototype, in progress</span><span class="q">Is it fun?</span></li>
-        <li><span>Marketability test</span><span class="q">Does it sell in 5 seconds?</span></li>
-        <li><span>Harvest</span><span class="q">What did we learn?</span></li>
-        <li><span>Game logic</span><span class="q">Are the rules correct?</span></li>
-        <li><span>Presentation</span><span class="q">Can the player play it?</span></li>
-        <li><span>Polish &amp; juice</span><span class="q">Does it feel great?</span></li>
-        <li><span>M1 Foundation</span><span class="q">Can we tune it remotely?</span></li>
-        <li><span>M2 First session</span><span class="q">Do players return tomorrow?</span></li>
-        <li><span>M3 Meta &amp; economy</span><span class="q">This week?</span></li>
-        <li><span>M4 Monetization</span><span class="q">Does each player add value?</span></li>
-        <li><span>M5 LiveOps &amp; social</span><span class="q">For months?</span></li>
-        <li><span>Scale</span><span class="q">Can content keep up?</span></li>
+        <li class="rv done" style="--d:0ms"><span><span data-l="en">Planning</span><span data-l="tr" lang="tr">Planlama</span></span><span class="q"><span data-l="en">What is the game?</span><span data-l="tr" lang="tr">Oyun ne?</span></span></li>
+        <li class="rv now" style="--d:60ms"><span><span data-l="en">Prototype, in progress</span><span data-l="tr" lang="tr">Prototip, devam ediyor</span></span><span class="q"><span data-l="en">Is it fun?</span><span data-l="tr" lang="tr">Eğlenceli mi?</span></span></li>
+        <li class="rv " style="--d:120ms"><span><span data-l="en">Marketability test</span><span data-l="tr" lang="tr">Pazarlanabilirlik testi</span></span><span class="q"><span data-l="en">Does it sell in 5 seconds?</span><span data-l="tr" lang="tr">5 saniyede kendini satıyor mu?</span></span></li>
+        <li class="rv " style="--d:180ms"><span><span data-l="en">Harvest</span><span data-l="tr" lang="tr">Hasat</span></span><span class="q"><span data-l="en">What did we learn?</span><span data-l="tr" lang="tr">Ne öğrendik?</span></span></li>
+        <li class="rv " style="--d:240ms"><span><span data-l="en">Game logic</span><span data-l="tr" lang="tr">Oyun mantığı</span></span><span class="q"><span data-l="en">Are the rules correct?</span><span data-l="tr" lang="tr">Kurallar doğru mu?</span></span></li>
+        <li class="rv " style="--d:300ms"><span><span data-l="en">Presentation</span><span data-l="tr" lang="tr">Sunum</span></span><span class="q"><span data-l="en">Can the player play it?</span><span data-l="tr" lang="tr">Oyuncu oynayabiliyor mu?</span></span></li>
+        <li class="rv " style="--d:360ms"><span><span data-l="en">Polish &amp; juice</span><span data-l="tr" lang="tr">Cila ve juice</span></span><span class="q"><span data-l="en">Does it feel great?</span><span data-l="tr" lang="tr">Hissi yerinde mi?</span></span></li>
+        <li class="rv " style="--d:420ms"><span><span data-l="en">M1 Foundation</span><span data-l="tr" lang="tr">M1 Temel</span></span><span class="q"><span data-l="en">Can we tune it remotely?</span><span data-l="tr" lang="tr">Uzaktan ayarlanabiliyor mu?</span></span></li>
+        <li class="rv " style="--d:480ms"><span><span data-l="en">M2 First session</span><span data-l="tr" lang="tr">M2 İlk oturum</span></span><span class="q"><span data-l="en">Do players return tomorrow?</span><span data-l="tr" lang="tr">Oyuncular yarın dönüyor mu?</span></span></li>
+        <li class="rv " style="--d:540ms"><span><span data-l="en">M3 Meta &amp; economy</span><span data-l="tr" lang="tr">M3 Meta ve ekonomi</span></span><span class="q"><span data-l="en">This week?</span><span data-l="tr" lang="tr">Bu hafta?</span></span></li>
+        <li class="rv " style="--d:600ms"><span><span data-l="en">M4 Monetization</span><span data-l="tr" lang="tr">M4 Monetizasyon</span></span><span class="q"><span data-l="en">Does each player add value?</span><span data-l="tr" lang="tr">Her oyuncu gelir getiriyor mu?</span></span></li>
+        <li class="rv " style="--d:660ms"><span><span data-l="en">M5 LiveOps &amp; social</span><span data-l="tr" lang="tr">M5 LiveOps ve sosyal</span></span><span class="q"><span data-l="en">For months?</span><span data-l="tr" lang="tr">Aylarca?</span></span></li>
+        <li class="rv " style="--d:720ms"><span><span data-l="en">Scale</span><span data-l="tr" lang="tr">Ölçek</span></span><span class="q"><span data-l="en">Can content keep up?</span><span data-l="tr" lang="tr">İçerik üretimi yetişiyor mu?</span></span></li>
       </ol>
     </div>
   </section>
 
   <section id="projects" aria-labelledby="pr-title">
-    <h2 class="sec" id="pr-title">Puzzle and casual projects</h2>
-    <p class="lede">Mechanics I designed from zero, and trending ones I rebuilt to understand why they work.</p>
+    <h2 class="sec rv" id="pr-title"><span data-l="en">Puzzle and casual projects</span><span data-l="tr" lang="tr">Puzzle ve casual projeler</span></h2>
+    <p class="lede rv"><span data-l="en">Mechanics I designed from zero, and trending ones I rebuilt to understand why they work.</span><span data-l="tr" lang="tr">Sıfırdan tasarladığım mekanikler ve neden işe yaradıklarını anlamak için yeniden yaptığım trend oyunlar.</span></p>
     <ul class="projects">
-      <li>
-        <div><h3>FluidSort</h3><span class="tag">Original mechanic</span></div>
-        <p>A sorting puzzle designed from zero, starting from market trend analysis.</p>
+      <li class="rv slide" style="--d:0ms">
+        <div><h3>FluidSort</h3><span class="tag"><span data-l="en">Original mechanic</span><span data-l="tr" lang="tr">Özgün mekanik</span></span></div>
+        <p><span data-l="en">A liquid puzzle inspired by the classic hourglass interview question: your containers never hold the exact amount, so you reach it through intermediate steps. Prototyped with AI to test the core before production.</span><span data-l="tr" lang="tr">Klasik kum saati mülakat sorusundan ilham alan bir sıvı bulmacası: Kaplar tam miktarı hiçbir zaman vermiyor, oraya ara adımlarla ulaşıyorsun. Production öncesinde çekirdeği test etmek için AI ile prototiplendi.</span></p>
         <div class="plinks"><a href="https://kutanarcanakgul.itch.io/fluid-sort" target="_blank" rel="noopener">itch.io</a><a href="https://www.linkedin.com/posts/kutanarcanakgul_gamedev-gamedesign-prototype-activity-7488488744514351106-43rR" target="_blank" rel="noopener">LinkedIn</a></div>
       </li>
-      <li>
-        <div><h3>Buildris</h3><span class="tag">Original twist</span></div>
-        <p>Tetris with a runtime tetromino editor. Players design their own pieces while the game runs; the only rule is that blocks must touch.</p>
+      <li class="rv slide" style="--d:70ms">
+        <div><h3>Buildris</h3><span class="tag"><span data-l="en">Original twist</span><span data-l="tr" lang="tr">Özgün yorum</span></span></div>
+        <p><span data-l="en">Tetris with a catch: you build your own blocks. Players design their pieces in a runtime editor where the only rule is that blocks must touch, and if they build a cheat set, that fun is theirs to have.</span><span data-l="tr" lang="tr">Bir farkla Tetris: Blokları sen inşa ediyorsun. Oyuncular parçalarını, tek kuralın blokların birbirine temas etmesi olduğu bir runtime editörde tasarlıyor; hile bir set kurmak isterlerse, o eğlence de onların.</span></p>
         <div class="plinks"><a href="https://kutanarcanakgul.itch.io/buildris" target="_blank" rel="noopener">itch.io</a><a href="https://www.linkedin.com/posts/kutanarcanakgul_gamedev-unity-csharp-activity-7483052774386151424-HgSb" target="_blank" rel="noopener">LinkedIn</a></div>
       </li>
-      <li>
-        <div><h3>Nut Sort × Ball Sort</h3><span class="tag">Architecture study</span></div>
-        <p>One logic and data layer driving two completely different games on screen.</p>
+      <li class="rv slide" style="--d:140ms">
+        <div><h3>Nut Sort × Ball Sort</h3><span class="tag"><span data-l="en">Architecture study</span><span data-l="tr" lang="tr">Mimari çalışma</span></span></div>
+        <p><span data-l="en">One codebase, two games: a pure C# brain drives both, and each theme owns its visuals. Levels are generated backwards from the solved state and verified with BFS.</span><span data-l="tr" lang="tr">Tek kod tabanı, iki oyun: İkisini de saf C# bir çekirdek yönetiyor, görselleri ise her tema kendisi üstleniyor. Level'lar çözülmüş hâlden geriye doğru üretiliyor ve BFS ile doğrulanıyor.</span></p>
         <div class="plinks"><a href="https://www.linkedin.com/posts/kutanarcanakgul_gamedev-unity-csharp-activity-7480929195771060224-v3Pr" target="_blank" rel="noopener">LinkedIn</a></div>
       </li>
-      <li>
-        <div><h3>SmashFest clone</h3><span class="tag">Rebuilt in 2–3 days</span></div>
-        <p>A trending title rebuilt with a closed-form ballistic solver, a pure C# core, 186 EditMode tests and a multi-layer grid level editor.</p>
+      <li class="rv slide" style="--d:210ms">
+        <div><h3>SmashFest clone</h3><span class="tag"><span data-l="en">Rebuilt in 2–3 days</span><span data-l="tr" lang="tr">2–3 günde yeniden yapıldı</span></span></div>
+        <p><span data-l="en">A trending title rebuilt in two to three days, with a closed-form ballistic solver for the throws and a multi-layer grid level editor.</span><span data-l="tr" lang="tr">İki üç günde yeniden yaptığım trend bir oyun: atışlar için kapalı formda bir balistik çözücü ve çok katmanlı bir grid level editörü.</span></p>
         <div class="plinks"><a href="https://github.com/Kutanarcan/SmashFestClone" target="_blank" rel="noopener">GitHub</a></div>
       </li>
-      <li>
-        <div><h3>Arrows replica</h3><span class="tag">Reverse-engineered</span></div>
-        <p>A trending mechanic rebuilt to study its level design and feel.</p>
+      <li class="rv slide" style="--d:280ms">
+        <div><h3>Arrows replica</h3><span class="tag"><span data-l="en">Reverse-engineered</span><span data-l="tr" lang="tr">Tersine mühendislik</span></span></div>
+        <p><span data-l="en">A trending mechanic rebuilt with its own level editor. The editor randomizes levels to edit from and flags deadlocks in red at save time.</span><span data-l="tr" lang="tr">Kendi level editörüyle birlikte yeniden yaptığım trend bir mekanik. Editör, düzenlemek için rastgele level üretiyor ve deadlock'ları kayıt anında kırmızıyla işaretliyor.</span></p>
         <div class="plinks"><a href="https://www.linkedin.com/posts/kutanarcanakgul_gamedev-unity-leveldesign-activity-7479809707218505728-uSo2" target="_blank" rel="noopener">LinkedIn</a></div>
       </li>
     </ul>
   </section>
 
-
   <section id="skills" aria-labelledby="sk-title">
-    <h2 class="sec" id="sk-title">Skills</h2>
-    <p class="lede">B.Sc. Computer Engineering, Erciyes University.</p>
+    <h2 class="sec rv" id="sk-title"><span data-l="en">Skills</span><span data-l="tr" lang="tr">Yetenekler</span></h2>
+    <p class="lede rv"><span data-l="en">B.Sc. Computer Engineering, Erciyes University.</span><span data-l="tr" lang="tr">Erciyes Üniversitesi, Bilgisayar Mühendisliği lisans.</span></p>
     <dl class="skills">
-      <div><dt>Engine and language</dt><dd>Unity, C#, URP, Input System</dd></div>
-      <div><dt>Architecture</dt><dd>Logic–data–view separation, SOLID, dependency injection (VContainer), assembly definitions</dd></div>
-      <div><dt>Testing</dt><dd>Unity Test Framework, NUnit, EditMode and PlayMode tests</dd></div>
-      <div><dt>Live games</dt><dd>Remote Config, A/B testing, analytics pipelines, live events, save data</dd></div>
-      <div><dt>Performance</dt><dd>Multithreading, direct mesh buffers, pooling, GC profiling</dd></div>
-      <div><dt>Tooling and release</dt><dd>Level editors, JSON level pipelines, ad and Play SDKs, Gradle, Play Console</dd></div>
+      <div class="rv" style="--d:0ms"><dt><span data-l="en">Engine and language</span><span data-l="tr" lang="tr">Motor ve dil</span></dt><dd><span data-l="en">Unity, C#, URP, Input System</span><span data-l="tr" lang="tr">Unity, C#, URP, Input System</span></dd></div>
+      <div class="rv" style="--d:60ms"><dt><span data-l="en">Architecture</span><span data-l="tr" lang="tr">Mimari</span></dt><dd><span data-l="en">Logic–data–view separation, SOLID, dependency injection (VContainer), assembly definitions</span><span data-l="tr" lang="tr">Logic–data–view ayrımı, SOLID, dependency injection (VContainer), assembly definitions</span></dd></div>
+      <div class="rv" style="--d:120ms"><dt><span data-l="en">Testing</span><span data-l="tr" lang="tr">Test</span></dt><dd><span data-l="en">Unity Test Framework, NUnit, EditMode and PlayMode tests</span><span data-l="tr" lang="tr">Unity Test Framework, NUnit, EditMode ve PlayMode testleri</span></dd></div>
+      <div class="rv" style="--d:180ms"><dt><span data-l="en">Live games</span><span data-l="tr" lang="tr">Canlı oyunlar</span></dt><dd><span data-l="en">Remote Config, A/B testing, analytics pipelines, live events, save data</span><span data-l="tr" lang="tr">Remote Config, A/B testleri, analytics pipeline'ları, live event'ler, kayıt verisi</span></dd></div>
+      <div class="rv" style="--d:240ms"><dt><span data-l="en">Performance</span><span data-l="tr" lang="tr">Performans</span></dt><dd><span data-l="en">Multithreading, direct mesh buffers, pooling, GC profiling</span><span data-l="tr" lang="tr">Multithreading, doğrudan mesh buffer'ları, pooling, GC profiling</span></dd></div>
+      <div class="rv" style="--d:300ms"><dt><span data-l="en">Tooling and release</span><span data-l="tr" lang="tr">Araçlar ve yayın</span></dt><dd><span data-l="en">Level editors, JSON level pipelines, ad and Play SDKs, Gradle, Play Console</span><span data-l="tr" lang="tr">Level editörleri, JSON level pipeline'ları, reklam ve Play SDK'ları, Gradle, Play Console</span></dd></div>
     </dl>
   </section>
 
-  <footer>
-    <h2>Let's talk</h2>
-    <p>Based in İstanbul. I'm happy to talk in person or take on a case.</p>
-    <ul class="links">
-      <li><a href="mailto:kutanarcanakgul@gmail.com">kutanarcanakgul@gmail.com</a></li>
-      <li><a class="btn primary" href="Kutan_Arcan_Akgul_CV_2026.pdf" download>Download CV</a></li>
-    </ul>
+  <section id="contact" aria-labelledby="ct-title">
+    <h2 class="sec rv" id="ct-title"><span data-l="en">Let's work together</span><span data-l="tr" lang="tr">Birlikte çalışalım</span></h2>
+    <p class="lede rv"><span data-l="en">Building a puzzle or hybrid-casual game and need someone who can take it from the first prototype to live-ops? Let's talk about how I can help your team ship it.</span><span data-l="tr" lang="tr">Puzzle ya da hybrid-casual bir oyun geliştiriyorsanız ve onu ilk prototipten live-ops'a taşıyacak birini arıyorsanız, ekibinize nasıl katkı sağlayabileceğimi konuşalım.</span></p>
+    <div class="contact-grid">
+      <a class="ccard rv" style="--d:0ms" href="mailto:kutanarcanakgul@gmail.com"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg></span><span><span class="k"><span data-l="en">Email</span><span data-l="tr" lang="tr">E-posta</span></span><span class="v">kutanarcanakgul@<wbr>gmail.com</span></span></a>
+      <div class="ccard rv" style="--d:70ms"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><span><span class="k"><span data-l="en">Location</span><span data-l="tr" lang="tr">Konum</span></span><span class="v">İstanbul, Türkiye</span></span></div>
+      <a class="ccard rv" style="--d:140ms" href="Kutan_Arcan_Akgul_CV_2026.pdf" download><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 11v6M9.5 14.5L12 17l2.5-2.5"/></svg></span><span><span class="k">CV</span><span class="v"><span data-l="en">Download PDF</span><span data-l="tr" lang="tr">PDF olarak indir</span></span></span></a>
+      <a class="ccard rv" style="--d:210ms" href="https://github.com/Kutanarcan" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4.5l-3 15"/></svg></span><span><span class="k">GitHub</span><span class="v">github.com/Kutanarcan</span></span></a>
+      <a class="ccard rv" style="--d:280ms" href="https://linkedin.com/in/kutanarcanakgul" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M8.5 7V5.5A1.5 1.5 0 0 1 10 4h4a1.5 1.5 0 0 1 1.5 1.5V7M3 12.5h18"/></svg></span><span><span class="k">LinkedIn</span><span class="v">in/kutanarcanakgul</span></span></a>
+      <a class="ccard rv" style="--d:350ms" href="https://kutanarcanakgul.itch.io" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8h10a4 4 0 0 1 4 4v1.5a3.5 3.5 0 0 1-6.3 2.1L14 14.5h-4l-.7 1.1A3.5 3.5 0 0 1 3 13.5V12a4 4 0 0 1 4-4z"/><path d="M7.5 10.5v3M6 12h3M15.5 11.5h.01M17.5 13h.01"/></svg></span><span><span class="k">itch.io</span><span class="v">kutanarcanakgul.itch.io</span></span></a>
+    </div>
+  </section>
+
+  <footer class="sitefoot">
+    <span>© 2026 Kutan Arcan Akgül</span>
+    <a href="#top"><span data-l="en">Back to top</span><span data-l="tr" lang="tr">Başa dön</span></a>
   </footer>
 </main>
 
 <script>
 (function(){
+  var root=document.documentElement;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function save(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+
+  /* Language */
+  var titles={en:'Kutan Arcan Akgül, Game Developer',tr:'Kutan Arcan Akgül, Oyun Geliştirici'};
+  function setLang(l){
+    root.setAttribute('data-lang',l); root.lang=l; document.title=titles[l];
+    document.querySelectorAll('[data-set-lang]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.setLang===l))});
+    save('kaa-lang',l); updateThemeLabel();
+  }
+  document.querySelectorAll('[data-set-lang]').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.setLang)})});
+
+  /* Theme */
+  var themeBtn=document.querySelector('.theme-btn');
+  function updateThemeLabel(){
+    var dark=root.getAttribute('data-theme')!=='light', tr=root.getAttribute('data-lang')==='tr';
+    themeBtn.setAttribute('aria-label', dark ? (tr?'Açık temaya geç':'Switch to light mode') : (tr?'Koyu temaya geç':'Switch to dark mode'));
+  }
+  function setTheme(t){
+    root.setAttribute('data-theme',t);
+    document.querySelectorAll('[data-set-theme]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.setTheme===t))});
+    save('kaa-theme',t); updateThemeLabel();
+  }
+  themeBtn.addEventListener('click',function(){setTheme(root.getAttribute('data-theme')==='light'?'dark':'light')});
+  document.querySelectorAll('[data-set-theme]').forEach(function(b){b.addEventListener('click',function(){setTheme(b.dataset.setTheme)})});
+  setLang(root.getAttribute('data-lang')||'en'); setTheme(root.getAttribute('data-theme')||'dark');
+
+  /* Drawer */
+  var drawer=document.getElementById('drawer'), scrim=document.getElementById('scrim'), burger=document.querySelector('.burger');
+  function openDrawer(o){
+    drawer.classList.toggle('open',o); scrim.classList.toggle('open',o);
+    drawer.setAttribute('aria-hidden',String(!o)); burger.setAttribute('aria-expanded',String(o));
+    if(o){ var a=drawer.querySelector('nav a'); setTimeout(function(){a&&a.focus()},200); } else burger.focus({preventScroll:true});
+  }
+  burger.addEventListener('click',function(){openDrawer(!drawer.classList.contains('open'))});
+  scrim.addEventListener('click',function(){openDrawer(false)});
+  drawer.querySelector('.close-drawer').addEventListener('click',function(){openDrawer(false)});
+  drawer.querySelectorAll('nav a').forEach(function(a){a.addEventListener('click',function(){openDrawer(false)})});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&drawer.classList.contains('open'))openDrawer(false)});
+
+  /* Header + progress + timeline fill */
+  var topbar=document.getElementById('topbar'), prog=document.querySelector('.progress'), tl=document.getElementById('timeline');
+  var entries=[].slice.call(document.querySelectorAll('.entry'));
+  function onScroll(){
+    var y=window.scrollY, h=document.documentElement.scrollHeight-window.innerHeight;
+    topbar.classList.toggle('scrolled',y>40);
+    prog.style.setProperty('--sp',h>0?(y/h).toFixed(4):0);
+    var r=tl.getBoundingClientRect(), mid=window.innerHeight*0.6;
+    var p=Math.max(0,Math.min(1,(mid-r.top)/r.height)); tl.style.setProperty('--p',p.toFixed(4));
+    entries.forEach(function(e){ e.classList.toggle('lit', e.getBoundingClientRect().top+12<mid); });
+  }
+  window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll); onScroll();
+
+  /* Reveal */
+  var h1=document.querySelector('.reveal-h1');
+  var rvs=[].slice.call(document.querySelectorAll('.rv'));
+  if(reduce||!('IntersectionObserver' in window)){ rvs.forEach(function(el){el.classList.add('in')}); document.querySelectorAll('.tags').forEach(function(t){t.classList.add('in')}); h1.classList.add('in'); }
+  else{
+    requestAnimationFrame(function(){ h1.classList.add('in'); });
+    var io=new IntersectionObserver(function(list){
+      list.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target);} });
+    },{rootMargin:'0px 0px -8% 0px',threshold:0.08});
+    rvs.forEach(function(el){io.observe(el)});
+    document.querySelectorAll('.tags').forEach(function(t){ [].forEach.call(t.children,function(li,i){li.style.setProperty('--d',(i*50)+'ms')}); io.observe(t); });
+    var cio=new IntersectionObserver(function(list){list.forEach(function(en){ if(!en.isIntersecting) return; cio.unobserve(en.target);
+      var el=en.target, to=+el.dataset.count, suf=el.dataset.suffix||'', t0=null, dur=1300;
+      function f(ts){ if(!t0)t0=ts; var k=Math.min(1,(ts-t0)/dur), e=1-Math.pow(1-k,3); el.textContent=Math.round(to*e)+suf; if(k<1)requestAnimationFrame(f); }
+      el.textContent='0'+suf; requestAnimationFrame(f); })},{threshold:.6});
+    document.querySelectorAll('.stats .num').forEach(function(n){cio.observe(n)});
+    // stagger bullet lists
+    document.querySelectorAll('.body ul').forEach(function(ul){ [].forEach.call(ul.children,function(li,i){ li.style.setProperty('--d',(i*70)+'ms'); }); });
+  }
+
+  /* Active section: scroll-based */
+  var navLinks={}; document.querySelectorAll('.drawer nav a, .mainnav a').forEach(function(a){var k=a.getAttribute('href').slice(1);(navLinks[k]=navLinks[k]||[]).push(a)});
+  var secIds=['experience','cube-roll','projects','skills','contact'], secs=secIds.map(function(id){return document.getElementById(id)});
+  function setActive(){
+    var line=window.innerHeight*0.35, cur=null;
+    secs.forEach(function(s,idx){ if(s.getBoundingClientRect().top<=line) cur=secIds[idx]; });
+    if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-4) cur='contact';
+    Object.keys(navLinks).forEach(function(k){navLinks[k].forEach(function(a){ var on=k===cur; a.classList.toggle('active',on); if(on) a.setAttribute('aria-current','true'); else a.removeAttribute('aria-current'); })});
+  }
+  window.addEventListener('scroll',setActive,{passive:true}); window.addEventListener('resize',setActive); setActive();
 
 })();
 </script>
+
 </body>
 </html>
