@@ -147,19 +147,19 @@ h2.sec::after{content:"";position:absolute;left:0;bottom:0;height:4px;width:56px
 .card{display:flex;flex-direction:column;height:100%;background:var(--surface);border:1.5px solid var(--line);border-radius:24px;padding:14px;color:inherit;transition:border-color .25s ease,box-shadow .3s ease}
 .card:hover{border-color:var(--cube);box-shadow:var(--shadow)}
 .card .shot{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:16px;background:var(--empty)}
-.card .meta{display:flex;align-items:center;gap:10px;padding:12px 4px 2px;margin-top:auto}
+.card .meta{display:flex;align-items:flex-start;gap:10px;padding:12px 4px 2px;flex:1}
 .card .meta .txt{min-width:0;flex:1}
-.card .badges{display:flex;gap:8px;flex:none}
+.card .badges{display:flex;flex-wrap:wrap;gap:8px;flex:none}
 .card .meta strong{display:block;font-family:var(--display);font-weight:700;font-size:1rem;line-height:1.25;overflow-wrap:break-word}
 .card .meta span{display:block;color:var(--muted);font-size:.87rem}
-.card .badge{display:block;flex:none;width:36px;height:36px;border-radius:11px;overflow:hidden;border:1px solid var(--line);transition:border-color .2s ease,transform .25s var(--ease)}
+.card .badge{display:block;flex:none;width:38px;height:38px;border-radius:11px;overflow:hidden;border:1px solid var(--line);transition:border-color .2s ease,transform .25s var(--ease)}
 .card .badge:hover{border-color:var(--cube);transform:translateY(-2px)}
 .card .badge img{display:block;width:100%;height:100%;object-fit:cover}
 .dots{display:flex;justify-content:center;gap:8px;margin-top:18px}
 .dots button{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:var(--line);cursor:pointer;transition:background-color .25s ease,transform .25s var(--ease)}
 .dots button[aria-current="true"]{background:var(--cube);transform:scale(1.4)}
-@media (max-width:900px){.viewport{--gap:12px}.card{padding:10px;border-radius:18px}.card .shot{border-radius:12px}.card .meta strong{font-size:.9rem}.card .meta span{font-size:.78rem}.card .badge{width:30px;height:30px;border-radius:9px}}
-@media (max-width:640px){.reel-row{gap:6px}.reel-head h2{font-size:1.1rem}.viewport{--gap:8px}.card{padding:7px;border-radius:14px}.card .meta{flex-direction:column;align-items:flex-start;gap:6px;padding:8px 2px 2px}.card .meta strong{font-size:.8rem;line-height:1.2}.card .meta span{font-size:.7rem}.card .badge{width:24px;height:24px;border-radius:7px}.iconbtn{width:34px;height:34px}}
+@media (max-width:900px){.viewport{--gap:12px}.card{padding:10px;border-radius:18px}.card .shot{border-radius:12px}.card .meta strong{font-size:.9rem}.card .meta span{font-size:.78rem}.card .badge{width:36px;height:36px;border-radius:10px}}
+@media (max-width:640px){.reel-row{gap:6px}.reel-head h2{font-size:1.1rem}.viewport{--gap:8px}.card{padding:7px;border-radius:14px}.card .meta{flex-direction:column;align-items:flex-start;gap:10px;padding:8px 2px 2px}.card .meta strong{font-size:.8rem;line-height:1.2}.card .meta span{font-size:.7rem}.card .badges{margin-top:auto;gap:6px}.card .badge{width:38px;height:38px;border-radius:11px}.iconbtn{width:38px;height:38px}}
 
 /* Stats */
 .stats{border-top:1.5px solid var(--line);padding:40px 0}
@@ -381,6 +381,18 @@ a.ccard:hover .ic,button.ccard:hover .ic{background:var(--cube);color:var(--on-c
             <div class="card">
               <img class="shot" src="img/cover-cube-roll.webp" alt="Cube Roll Puzzle" width="560" height="560" loading="lazy" decoding="async">
               <div class="meta"><div class="txt"><strong>Cube Roll Puzzle</strong><span data-l="en">Personal project, in development</span><span data-l="tr" lang="tr">Kişisel proje, geliştiriliyor</span></div><div class="badges"><a class="badge" href="https://github.com/Kutanarcan/CubeRollPuzzle" target="_blank" rel="noopener" aria-label="Cube Roll Puzzle - GitHub" title="GitHub"><img src="img/icon-github.webp" alt="" width="128" height="128" loading="lazy" decoding="async"></a></div></div>
+            </div>
+          </div>
+          <div class="slide">
+            <div class="card">
+              <img class="shot" src="img/cover-fluidsort.webp" alt="FluidSort" width="560" height="560" loading="lazy" decoding="async">
+              <div class="meta"><div class="txt"><strong>FluidSort</strong><span data-l="en">Personal project, original mechanic</span><span data-l="tr" lang="tr">Kişisel proje, özgün mekanik</span></div><div class="badges"><a class="badge" href="https://kutanarcanakgul.itch.io/fluid-sort" target="_blank" rel="noopener" aria-label="FluidSort - itch.io" title="itch.io"><img src="img/icon-itch.webp" alt="" width="128" height="128" loading="lazy" decoding="async"></a><a class="badge" href="https://www.linkedin.com/posts/kutanarcanakgul_gamedev-gamedesign-prototype-activity-7488488744514351106-43rR" target="_blank" rel="noopener" aria-label="FluidSort - LinkedIn" title="LinkedIn"><img src="img/icon-linkedin.webp" alt="" width="128" height="128" loading="lazy" decoding="async"></a></div></div>
+            </div>
+          </div>
+          <div class="slide">
+            <div class="card">
+              <img class="shot" src="img/cover-buildris.webp" alt="Buildris" width="560" height="560" loading="lazy" decoding="async">
+              <div class="meta"><div class="txt"><strong>Buildris</strong><span data-l="en">Personal project, original twist</span><span data-l="tr" lang="tr">Kişisel proje, özgün yorum</span></div><div class="badges"><a class="badge" href="https://kutanarcanakgul.itch.io/buildris" target="_blank" rel="noopener" aria-label="Buildris - itch.io" title="itch.io"><img src="img/icon-itch.webp" alt="" width="128" height="128" loading="lazy" decoding="async"></a><a class="badge" href="https://www.linkedin.com/posts/kutanarcanakgul_gamedev-unity-csharp-activity-7483052774386151424-HgSb" target="_blank" rel="noopener" aria-label="Buildris - LinkedIn" title="LinkedIn"><img src="img/icon-linkedin.webp" alt="" width="128" height="128" loading="lazy" decoding="async"></a></div></div>
             </div>
           </div>
           <div class="slide">
