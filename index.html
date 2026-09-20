@@ -134,6 +134,33 @@ h2.sec::after{content:"";position:absolute;left:0;bottom:0;height:4px;width:56px
 .js h2.sec:not(.in)::after{transform:scaleX(0)}
 .lede{color:var(--muted);max-width:40em;margin:0 0 36px}
 
+/* Reel */
+.reel{padding:56px 0 8px}
+.reel-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:20px}
+.reel-head h2{font-family:var(--display);font-weight:700;font-size:1.25rem;margin:0;letter-spacing:-.01em}
+.reel-head .count{color:var(--muted);font-size:.9rem;font-variant-numeric:tabular-nums}
+.reel-row{display:flex;align-items:center;gap:14px;justify-content:center}
+.viewport{--per:3;--gap:16px;overflow:hidden;flex:1;min-width:0;border-radius:26px}
+.track{display:flex;gap:var(--gap);transition:transform .5s var(--ease)}
+.slide{flex:0 0 calc((100% - (var(--per) - 1) * var(--gap)) / var(--per));min-width:0;display:flex}
+.slide > .card{width:100%}
+.card{display:flex;flex-direction:column;height:100%;background:var(--surface);border:1.5px solid var(--line);border-radius:24px;padding:14px;color:inherit;transition:border-color .25s ease,box-shadow .3s ease}
+.card:hover{border-color:var(--cube);box-shadow:var(--shadow)}
+.card .shot{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:16px;background:var(--empty)}
+.card .meta{display:flex;align-items:center;gap:10px;padding:12px 4px 2px;margin-top:auto}
+.card .meta .txt{min-width:0;flex:1}
+.card .badges{display:flex;gap:8px;flex:none}
+.card .meta strong{display:block;font-family:var(--display);font-weight:700;font-size:1rem;line-height:1.25;overflow-wrap:break-word}
+.card .meta span{display:block;color:var(--muted);font-size:.87rem}
+.card .badge{display:block;flex:none;width:36px;height:36px;border-radius:11px;overflow:hidden;border:1px solid var(--line);transition:border-color .2s ease,transform .25s var(--ease)}
+.card .badge:hover{border-color:var(--cube);transform:translateY(-2px)}
+.card .badge img{display:block;width:100%;height:100%;object-fit:cover}
+.dots{display:flex;justify-content:center;gap:8px;margin-top:18px}
+.dots button{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:var(--line);cursor:pointer;transition:background-color .25s ease,transform .25s var(--ease)}
+.dots button[aria-current="true"]{background:var(--cube);transform:scale(1.4)}
+@media (max-width:900px){.viewport{--gap:12px}.card{padding:10px;border-radius:18px}.card .shot{border-radius:12px}.card .meta strong{font-size:.9rem}.card .meta span{font-size:.78rem}.card .badge{width:30px;height:30px;border-radius:9px}}
+@media (max-width:640px){.reel-row{gap:6px}.reel-head h2{font-size:1.1rem}.viewport{--gap:8px}.card{padding:7px;border-radius:14px}.card .meta{flex-direction:column;align-items:flex-start;gap:6px;padding:8px 2px 2px}.card .meta strong{font-size:.8rem;line-height:1.2}.card .meta span{font-size:.7rem}.card .badge{width:24px;height:24px;border-radius:7px}.iconbtn{width:34px;height:34px}}
+
 /* Stats */
 .stats{border-top:1.5px solid var(--line);padding:40px 0}
 .stats ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -315,6 +342,74 @@ a.ccard:hover .ic,button.ccard:hover .ic{background:var(--cube);color:var(--on-c
     </div>
   </header>
 
+  <section class="reel" aria-labelledby="reel-title">
+    <div class="reel-head">
+      <h2 id="reel-title"><span data-l="en">Games I've worked on and built</span><span data-l="tr" lang="tr">Çalıştığım ve yaptığım oyunlar</span></h2>
+      <span class="count" id="reel-count" aria-hidden="true">1 / 8</span>
+    </div>
+    <div class="reel-row">
+      <button class="iconbtn" type="button" id="reel-prev" aria-label="Previous" aria-controls="reel-track" data-lbl="prev">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5L8 12l6.5 6.5"/></svg>
+      </button>
+      <div class="viewport">
+        <div class="track" id="reel-track">
+          <div class="slide">
+            <div class="card">
+              <img class="shot" src="img/cover-match-hotel.webp" alt="Match Hotel" width="560" height="560" loading="lazy" decoding="async">
+              <div class="meta"><div class="txt"><strong>Match Hotel</strong><span data-l="en">SciPlay, live-ops triple-match</span><span data-l="tr" lang="tr">SciPlay, live-ops triple-match</span></div><div class="badges"><a class="badge" href="https://play.google.com/store/apps/details?id=com.ck.tripletiles" target="_blank" rel="noopener" aria-label="Match Hotel - Google Play" title="Google Play"><img src="img/icon-playstore.webp" alt="" width="128" height="128" loading="lazy" decoding="async"></a><a class="badge" href="https://apps.apple.com/us/app/match-hotel-3d-puzzle-game/id6448539147" target="_blank" rel="noopener" aria-label="Match Hotel - App Store" title="App Store"><img src="img/icon-appstore.webp" alt="" width="128" height="128" loading="lazy" decoding="async"></a></div></div>
+            </div>
+          </div>
+          <div class="slide">
+            <div class="card">
+              <img class="shot" src="img/cover-x-street.webp" alt="Car Racing Simulator: X Street" width="560" height="560" loading="lazy" decoding="async">
+              <div class="meta"><div class="txt"><strong>Car Racing Simulator: X Street</strong><span data-l="en">Banba Games, open-world racer</span><span data-l="tr" lang="tr">Banba Games, açık dünya yarış oyunu</span></div><div class="badges"><a class="badge" href="https://play.google.com/store/apps/details?id=com.banbagames.grandstreetracing" target="_blank" rel="noopener" aria-label="Car Racing Simulator: X Street - Google Play" title="Google Play"><img src="img/icon-playstore.webp" alt="" width="128" height="128" loading="lazy" decoding="async"></a><a class="badge" href="https://apps.apple.com/tr/app/grand-street-racing/id6745093883" target="_blank" rel="noopener" aria-label="Car Racing Simulator: X Street - App Store" title="App Store"><img src="img/icon-appstore.webp" alt="" width="128" height="128" loading="lazy" decoding="async"></a></div></div>
+            </div>
+          </div>
+          <div class="slide">
+            <div class="card">
+              <img class="shot" src="img/cover-hypercasuals.webp" alt="Hyper-casual titles" width="560" height="560" loading="lazy" decoding="async">
+              <div class="meta"><div class="txt"><strong>Hyper-casual titles</strong><span data-l="en">Talus Studio, 15 titles in 12 months</span><span data-l="tr" lang="tr">Talus Studio, 12 ayda 15 oyun</span></div><div class="badges"><a class="badge" href="https://www.linkedin.com/posts/kutanarcanakgul_hyper-casual-games-that-i-developed-at-talus-activity-7191368778008408064-6mT8/" target="_blank" rel="noopener" aria-label="Hyper-casual titles - LinkedIn" title="LinkedIn"><img src="img/icon-linkedin.webp" alt="" width="128" height="128" loading="lazy" decoding="async"></a></div></div>
+            </div>
+          </div>
+          <div class="slide">
+            <div class="card">
+              <img class="shot" src="img/cover-kral-shakir.webp" alt="Kral Shakir İstanbul" width="560" height="560" loading="lazy" decoding="async">
+              <div class="meta"><div class="txt"><strong>Kral Shakir İstanbul</strong><span data-l="en">Imaginite Studios, licensed IP</span><span data-l="tr" lang="tr">Imaginite Studios, lisanslı IP</span></div><div class="badges"><a class="badge" href="https://www.youtube.com/watch?v=sIg5PF1mP_I" target="_blank" rel="noopener" aria-label="Kral Shakir İstanbul - YouTube" title="YouTube"><img src="img/icon-youtube.webp" alt="" width="128" height="128" loading="lazy" decoding="async"></a></div></div>
+            </div>
+          </div>
+          <div class="slide">
+            <div class="card">
+              <img class="shot" src="img/cover-cube-roll.webp" alt="Cube Roll Puzzle" width="560" height="560" loading="lazy" decoding="async">
+              <div class="meta"><div class="txt"><strong>Cube Roll Puzzle</strong><span data-l="en">Personal project, in development</span><span data-l="tr" lang="tr">Kişisel proje, geliştiriliyor</span></div><div class="badges"><a class="badge" href="https://github.com/Kutanarcan/CubeRollPuzzle" target="_blank" rel="noopener" aria-label="Cube Roll Puzzle - GitHub" title="GitHub"><img src="img/icon-github.webp" alt="" width="128" height="128" loading="lazy" decoding="async"></a></div></div>
+            </div>
+          </div>
+          <div class="slide">
+            <div class="card">
+              <img class="shot" src="img/cover-smashfest.webp" alt="SmashFest clone" width="560" height="560" loading="lazy" decoding="async">
+              <div class="meta"><div class="txt"><strong>SmashFest clone</strong><span data-l="en">Personal project</span><span data-l="tr" lang="tr">Kişisel proje</span></div><div class="badges"><a class="badge" href="https://github.com/Kutanarcan/SmashFestClone" target="_blank" rel="noopener" aria-label="SmashFest clone - GitHub" title="GitHub"><img src="img/icon-github.webp" alt="" width="128" height="128" loading="lazy" decoding="async"></a></div></div>
+            </div>
+          </div>
+          <div class="slide">
+            <div class="card">
+              <img class="shot" src="img/cover-nut-ball-sort.webp" alt="Nut Sort × Ball Sort" width="560" height="560" loading="lazy" decoding="async">
+              <div class="meta"><div class="txt"><strong>Nut Sort × Ball Sort</strong><span data-l="en">Personal project</span><span data-l="tr" lang="tr">Kişisel proje</span></div><div class="badges"><a class="badge" href="https://www.linkedin.com/posts/kutanarcanakgul_gamedev-unity-csharp-activity-7480929195771060224-v3Pr" target="_blank" rel="noopener" aria-label="Nut Sort × Ball Sort - LinkedIn" title="LinkedIn"><img src="img/icon-linkedin.webp" alt="" width="128" height="128" loading="lazy" decoding="async"></a></div></div>
+            </div>
+          </div>
+          <div class="slide">
+            <div class="card">
+              <img class="shot" src="img/cover-arrows.webp" alt="Arrows replica" width="560" height="560" loading="lazy" decoding="async">
+              <div class="meta"><div class="txt"><strong>Arrows replica</strong><span data-l="en">Personal project</span><span data-l="tr" lang="tr">Kişisel proje</span></div><div class="badges"><a class="badge" href="https://www.linkedin.com/posts/kutanarcanakgul_gamedev-unity-leveldesign-activity-7479809707218505728-uSo2" target="_blank" rel="noopener" aria-label="Arrows replica - LinkedIn" title="LinkedIn"><img src="img/icon-linkedin.webp" alt="" width="128" height="128" loading="lazy" decoding="async"></a></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="iconbtn" type="button" id="reel-next" aria-label="Next" aria-controls="reel-track" data-lbl="next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5.5L16 12l-6.5 6.5"/></svg>
+      </button>
+    </div>
+    <div class="dots" id="reel-dots" role="tablist" aria-label="Slides" data-lbl="slides"></div>
+  </section>
+
   <div class="stats" aria-label="Highlights">
     <ul>
       <li class="rv" style="--d:0ms"><span class="num" data-count="6">6</span><span class="lbl"><span data-l="en">years building mobile games</span><span data-l="tr" lang="tr">yıldır mobil oyun geliştiriyorum</span></span></li>
@@ -335,7 +430,7 @@ a.ccard:hover .ic,button.ccard:hover .ic{background:var(--cube);color:var(--on-c
           <span class="dot" aria-hidden="true"></span>
           <h3 class="rv">Sciplay Turkey</h3>
           <p class="title rv"><span data-l="en">Game Developer / Software Engineer</span><span data-l="tr" lang="tr">Oyun Geliştirici / Yazılım Mühendisi</span></p>
-          <p class="game rv"><span data-l="en">Match Hotel, live-ops triple-match game. <a href="https://play.google.com/store/apps/details?id=com.ck.tripletiles" target="_blank" rel="noopener">Google Play</a></span><span data-l="tr" lang="tr">Match Hotel, live-ops odaklı bir triple-match oyunu. <a href="https://play.google.com/store/apps/details?id=com.ck.tripletiles" target="_blank" rel="noopener">Google Play</a></span></p>
+          <p class="game rv"><span data-l="en">Match Hotel, live-ops triple-match game. <a href="https://play.google.com/store/apps/details?id=com.ck.tripletiles" target="_blank" rel="noopener">Google Play</a> <a href="https://apps.apple.com/us/app/match-hotel-3d-puzzle-game/id6448539147" target="_blank" rel="noopener">App Store</a></span><span data-l="tr" lang="tr">Match Hotel, live-ops odaklı bir triple-match oyunu. <a href="https://play.google.com/store/apps/details?id=com.ck.tripletiles" target="_blank" rel="noopener">Google Play</a> <a href="https://apps.apple.com/us/app/match-hotel-3d-puzzle-game/id6448539147" target="_blank" rel="noopener">App Store</a></span></p>
           <ul><li class="rv"><span data-l="en">Designed, implemented and tested two live-ops events end to end, Arthur's Deal and Vitamin Bar, owning logic, data, UI and analytics.</span><span data-l="tr" lang="tr">Arthur's Deal ve Vitamin Bar adlı iki live-ops event'ini uçtan uca tasarladım, geliştirdim ve test ettim; logic, data, UI ve analytics tarafları bendeydi.</span></li><li class="rv"><span data-l="en">Designed Vitamin Bar around player freedom. Every rule lives in the logic layer; views only report input. A player can place a piece, close the popup mid-animation, reopen it and carry on instantly. The architecture exists to serve that user experience.</span><span data-l="tr" lang="tr">Vitamin Bar'ı oyuncu özgürlüğü üzerine kurguladım. Tüm kurallar logic katmanında duruyor, view'lar yalnızca input'u iletiyor. Oyuncu bir parçayı yerleştirip animasyon sürerken popup'ı kapatabiliyor, tekrar açtığında kaldığı yerden anında devam edebiliyor. Mimari tamamen bu kullanıcı deneyimine hizmet etmek için var.</span></li><li class="rv"><span data-l="en">Reviewed every change with my team lead in code review sessions, tested and fixed alongside QA, and shaped event design and content with Product and Art.</span><span data-l="tr" lang="tr">Her değişikliği takım liderimle code review oturumlarında inceledim. QA ile yan yana test edip hataları giderdim; event tasarımını ve içeriğini de Product ve Art ekipleriyle şekillendirdim.</span></li><li class="rv"><span data-l="en">Built remote config structures for A/B testing on an epoch-based time system, replacing weekly manual event entry with looping time windows that schedule correctly worldwide.</span><span data-l="tr" lang="tr">A/B testleri için epoch tabanlı bir zaman sistemi üzerine remote config yapıları kurdum. Haftalık manuel event girişinin yerini, dünyanın her yerinde doğru zamanlanan döngüsel zaman pencereleri aldı.</span></li><li class="rv"><span data-l="en">Wrote the game's audio system from scratch and built the analytics layer behind nearly all live events, giving the data team the economy tracking it needed.</span><span data-l="tr" lang="tr">Oyunun ses sistemini sıfırdan yazdım. Neredeyse tüm live event'lerin arkasındaki analytics katmanını da kurarak data ekibinin ihtiyaç duyduğu ekonomi takibini mümkün kıldım.</span></li></ul>
           <ul class="tags" aria-label="Technologies"><li>Unity</li><li>C#</li><li>Live-ops</li><li>Remote Config</li><li>A/B testing</li><li>Analytics</li><li>Audio</li></ul>
         </div>
@@ -346,7 +441,7 @@ a.ccard:hover .ic,button.ccard:hover .ic{background:var(--cube);color:var(--on-c
           <span class="dot" aria-hidden="true"></span>
           <h3 class="rv">Banba Games</h3>
           <p class="title rv"><span data-l="en">Game Developer</span><span data-l="tr" lang="tr">Oyun Geliştirici</span></p>
-          <p class="game rv"><span data-l="en">Car Racing Simulator: X Street, live open-world racer. <a href="https://play.google.com/store/apps/details?id=com.banbagames.grandstreetracing" target="_blank" rel="noopener">Google Play</a></span><span data-l="tr" lang="tr">Car Racing Simulator: X Street, yayındaki açık dünya yarış oyunu. <a href="https://play.google.com/store/apps/details?id=com.banbagames.grandstreetracing" target="_blank" rel="noopener">Google Play</a></span></p>
+          <p class="game rv"><span data-l="en">Car Racing Simulator: X Street, live open-world racer. <a href="https://play.google.com/store/apps/details?id=com.banbagames.grandstreetracing" target="_blank" rel="noopener">Google Play</a> <a href="https://apps.apple.com/tr/app/grand-street-racing/id6745093883" target="_blank" rel="noopener">App Store</a></span><span data-l="tr" lang="tr">Car Racing Simulator: X Street, yayındaki açık dünya yarış oyunu. <a href="https://play.google.com/store/apps/details?id=com.banbagames.grandstreetracing" target="_blank" rel="noopener">Google Play</a> <a href="https://apps.apple.com/tr/app/grand-street-racing/id6745093883" target="_blank" rel="noopener">App Store</a></span></p>
           <ul><li class="rv"><span data-l="en">Rewrote the vehicle tire-trail mesh system from scratch: multithreaded, writing straight to index and vertex buffers, bypassing Unity's Mesh class. 5 ms to 0.1 ms per update, ~200 KB to zero allocation.</span><span data-l="tr" lang="tr">Araç lastik izi mesh sistemini sıfırdan yeniden yazdım: multithreaded çalışan, Unity'nin Mesh sınıfını atlayıp doğrudan index ve vertex buffer'lara yazan bir yapı. Güncelleme süresi 5 ms'den 0,1 ms'ye, ~200 KB'lık allocation ise sıfıra indi.</span></li><li class="rv"><span data-l="en">Built the title's scalable backend infrastructure and client–server communication from scratch, including the sync layer that reconciles offline play with the player's server-side state.</span><span data-l="tr" lang="tr">Oyunun ölçeklenebilir backend altyapısını ve client–server iletişimini sıfırdan kurdum. Offline oynanışı oyuncunun sunucudaki verisiyle uzlaştıran senkronizasyon katmanı da buna dahil.</span></li><li class="rv"><span data-l="en">Integrated the Google Play SDK suite, set up and ran the ad service in production, and owned the Android build pipeline end to end, from custom Gradle setup to Play Console releases.</span><span data-l="tr" lang="tr">Google Play SDK paketini entegre ettim, reklam servisini canlı ortamda kurup yönettim. Özel Gradle kurulumundan Play Console yayınlarına kadar Android build sürecinin tamamı benim sorumluluğumdaydı.</span></li><li class="rv"><span data-l="en">Built an online physics-based multiplayer party game prototype on FishNet (Bridge Race combined with Fall Guys-style mechanics) that stayed playable in testing at latencies up to 100 ms.</span><span data-l="tr" lang="tr">FishNet ile, Bridge Race ve Fall Guys tarzı mekanikleri birleştiren online, fizik tabanlı bir multiplayer parti oyunu prototipi geliştirdim. Oyun, testlerde 100 ms'ye varan gecikmelerde bile oynanabilir kaldı.</span></li></ul>
           <ul class="tags" aria-label="Technologies"><li>Unity</li><li>C#</li><li>Multithreading</li><li>Mesh buffers</li><li>Backend</li><li>FishNet</li><li>Google Play SDK</li><li>Gradle</li></ul>
         </div>
@@ -484,6 +579,8 @@ a.ccard:hover .ic,button.ccard:hover .ic{background:var(--cube);color:var(--on-c
     root.setAttribute('data-lang',l); root.lang=l; document.title=titles[l];
     document.querySelectorAll('[data-set-lang]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.setLang===l))});
     save('kaa-lang',l); updateThemeLabel();
+    var lbl={prev:{en:'Previous',tr:'Önceki'},next:{en:'Next',tr:'Sonraki'},slides:{en:'Slides',tr:'Slaytlar'}};
+    document.querySelectorAll('[data-lbl]').forEach(function(el){ el.setAttribute('aria-label', lbl[el.dataset.lbl][l]); });
   }
   document.querySelectorAll('[data-set-lang]').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.setLang)})});
 
@@ -547,6 +644,41 @@ a.ccard:hover .ic,button.ccard:hover .ic{background:var(--cube);color:var(--on-c
     // stagger bullet lists
     document.querySelectorAll('.body ul').forEach(function(ul){ [].forEach.call(ul.children,function(li,i){ li.style.setProperty('--d',(i*70)+'ms'); }); });
   }
+
+  /* Reel */
+  (function(){
+    var track=document.getElementById('reel-track'), slides=[].slice.call(track.children),
+        dots=document.getElementById('reel-dots'), cnt=document.getElementById('reel-count'), i=0;
+    slides.forEach(function(s,k){
+      var b=document.createElement('button'); b.type='button'; b.setAttribute('role','tab');
+      b.setAttribute('aria-label',(k+1)+''); b.addEventListener('click',function(){go(k)}); dots.appendChild(b);
+    });
+    var vp=track.parentNode;
+    function per(){ return Math.max(1, parseInt(getComputedStyle(vp).getPropertyValue('--per'))||1); }
+    function maxIndex(){ return Math.max(0, slides.length-per()); }
+    function go(n){
+      var m=maxIndex(); i=n<0?m:(n>m?0:n);
+      var gap=parseFloat(getComputedStyle(track).columnGap)||0, w=slides[0].getBoundingClientRect().width;
+      track.style.transform='translateX('+(-i*(w+gap))+'px)';
+      var p=per(), last=Math.min(i+p, slides.length);
+      cnt.textContent=(p>1?(i+1)+'–'+last:(i+1))+' / '+slides.length;
+      slides.forEach(function(s,k){ var on=k>=i&&k<i+p; s.setAttribute('aria-hidden',String(!on)); [].forEach.call(s.querySelectorAll('a'),function(a){a.tabIndex=on?0:-1}); });
+      [].forEach.call(dots.children,function(b,k){ b.hidden=k>m; b.setAttribute('aria-current',String(k===i)); });
+    }
+    window.addEventListener('resize',function(){ go(Math.min(i,maxIndex())); });
+    document.getElementById('reel-prev').addEventListener('click',function(){go(i-1)});
+    document.getElementById('reel-next').addEventListener('click',function(){go(i+1)});
+    track.parentNode.addEventListener('keydown',function(e){
+      if(e.key==='ArrowLeft'){e.preventDefault();go(i-1)} else if(e.key==='ArrowRight'){e.preventDefault();go(i+1)}
+    });
+    var x0=null;
+    track.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
+    track.addEventListener('touchend',function(e){
+      if(x0===null) return; var dx=e.changedTouches[0].clientX-x0; x0=null;
+      if(Math.abs(dx)>45) go(dx<0?i+1:i-1);
+    },{passive:true});
+    go(0);
+  })();
 
   /* Active section: scroll-based */
   var navLinks={}; document.querySelectorAll('.drawer nav a, .mainnav a').forEach(function(a){var k=a.getAttribute('href').slice(1);(navLinks[k]=navLinks[k]||[]).push(a)});
